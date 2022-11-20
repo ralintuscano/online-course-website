@@ -1,0 +1,61 @@
+<html><head>
+    <title>Online Course Website Project</title>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/stylesheets/kickstart.css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/stylesheets/style.css"
+      media="all"
+    />
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+    ></script>
+    <script type="text/javascript" src="/javascripts/kickstart.js"></script>
+
+  </head><body>
+
+    <!-- Menu Horizontal -->
+    <ul class="menu">
+      <li class="current"><a href="/">Home</a></li>
+      <li><a href="/classes">Classes</a></li>
+    </ul>
+
+    <div class="grid">
+
+      <div class="col_12">
+        <div class="col_9">
+                   {{!-- {{{body}}}  --}}
+<h3>Welcome to Online Course Website Project</h3>
+<p> Online Course Website is a Learning platform. Where instructor can create a new courses and students can register for the courses, and students can take quizz exams on the course and dowload the notess  </p>
+
+<a class="button" href="/users/signup">Sign Up</a>
+<p>You need to signup to register for online courses</p>
+
+        </div>
+
+        <div class="col_3">
+         {{>login}}
+
+        </div>
+
+        <hr />
+
+        {{>classes}}
+      </div>
+
+    </div><!-- END GRID -->
+
+    <!-- ===================================== START FOOTER ===================================== -->
+    <div class="clear"></div>
+    <div id="footer">
+      &copy; Copyright 2022 All Rights Reserved Online Course Website
+    </div>
+
+  </body></html>
