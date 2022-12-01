@@ -1,0 +1,23 @@
+<section class="">
+
+    <h2>Login</h2>
+  <form action="/login" method="POST" id="login-form">
+    <label for="usernameInput">
+      Username
+      <input type="text" name="usernameInput"  id="usernameInput" placeholder="Enter Username" value="{{post.title}}" />
+    </label>
+
+    <label for="passwordInput">
+      Password
+      <input type="password" name="passwordInput" id="passwordInput" placeholder="Enter Password" value="{{post.title}}"/>
+    </label>
+     
+    <button type="submit">Login!</button>
+    
+  </form>
+
+  <a href="/register">Click here to register!</a>
+    
+  {{#if error}}<div>{{error}}</div>{{/if}}
+
+</section>
