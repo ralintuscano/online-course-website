@@ -1,0 +1,23 @@
+<%- include("header") -%>
+    <div class="box" id="heading">
+        <h1><%= listtitle%></h1>
+    </div>
+<div class="box">
+    <% for(let i=0;i<newlistresource.length;i++){%>
+        <div class="item">
+           <ul>
+            <li><%=newlistresource[i]%></li>
+           </ul>
+        </div>
+        <% }%>
+        <form class="item" action="/resource_list" method="post">
+
+            <input type="text" name="newadd" placeholder="Add resource" autocomplete="off">
+            
+           <button type="submit" name="button">+</button>
+        </form>
+
+</div>
+<%-include("footer")-%>
+
+
