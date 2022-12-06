@@ -55,9 +55,7 @@ app.use(session({
 app.use(myLogger);
 
 app.use('/protected', (req, res, next) => {
-  // console.log(req.session.id);
   if (!req.session.user) {
-    // return res.redirect('/');
     return res.status(403).render('forbiddenAccess');
   } else {
     next();

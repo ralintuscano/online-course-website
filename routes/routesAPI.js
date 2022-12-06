@@ -6,16 +6,20 @@ const data = require("./../data/index");
 
 const users = data.users;
 
+// router
+//   .route('/')
+//   .get(async (req, res) => {
+//     if(req.session.user){
+//       res.redirect('/protected')
+//     }
+//     res.render('userLogin', {});
+//   })
+
 router
   .route('/')
   .get(async (req, res) => {
-    //code here for GET
-    //redirect to /protected if authenticated
-    //else send login form with register link
-    if(req.session.user){
-      res.redirect('/protected')
-    }
-    res.render('userLogin', {});
+   
+    res.render('student/courseList', {});
   })
 
 router
