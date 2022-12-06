@@ -2,7 +2,13 @@ const express = require('express');
 const app = express();
 const session = require('express-session');
 const exphbs = require('express-handlebars');
+const hbshelpers = require('handlebars-helpers');
+// const multihelpers = hbshelpers();
+
 const configRoutes = require('./routes');
+// const helpersDM = require('./')
+
+
 
 const myLogger = function (req, res, next) {
     console.log(`[${new Date().toUTCString()} ]: ${req.method} ${req.originalUrl} ${  req.session.user ? '':'Non-' }Authenticated User`);
@@ -14,7 +20,26 @@ app.use(express.json());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+// const hbs = exphbs.create({
+//   defaultLayout: 'main',
+//   helpers: {...multihelpers, ...helpersDM},
+// });
+
+
+
+const hbs = exphbs.create({
+  // Specify helpers which are only registered on this instance.
+  defaultLayout:'main',
+  helpers: {
+      renderNav() {return true },
+      foo() { return 'FOO!'; },
+      bar() { return 'BAR!'; }
+  }
+});
+
+app.engine('handlebars', hbs.engine);
+
+// app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 
