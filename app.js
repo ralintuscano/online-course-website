@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const session = require('express-session');
+const static = express.static(__dirname + '/public');
 const exphbs = require('express-handlebars');
 const hbshelpers = require('handlebars-helpers');
 // const multihelpers = hbshelpers();
@@ -27,20 +28,28 @@ app.use(express.urlencoded({extended: true}));
 
 
 
-const hbs = exphbs.create({
+const handlebarsInstance = exphbs.create({
+  defaultLayout: 'main',
   // Specify helpers which are only registered on this instance.
-  defaultLayout:'main',
   helpers: {
-      renderNav() {return true },
-      foo() { return 'FOO!'; },
-      bar() { return 'BAR!'; }
+    renderNav: (input) => {
+      return true
+    },
+    asJSON: (obj, spacing) => {
+      if (typeof spacing === 'number')
+        return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
+
+      return new Handlebars.SafeString(JSON.stringify(obj));
+    }
   }
 });
 
-app.engine('handlebars', hbs.engine);
 
-// app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+
+
+app.use;
+
+app.use('/public', static);
 
 
 app.use(session({
@@ -62,7 +71,14 @@ app.use('/protected', (req, res, next) => {
   }
 });
 
+app.engine('handlebars', handlebarsInstance.engine);
+
+// app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
 configRoutes(app);
+
+
 
 
 app.listen(3000, () => {

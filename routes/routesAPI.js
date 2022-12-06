@@ -15,11 +15,15 @@ const users = data.users;
 //     res.render('userLogin', {});
 //   })
 
+router.get('/static', (req, res) => {
+  res.render('calculator/static', {});
+});
+
 router
   .route('/')
   .get(async (req, res) => {
    
-    res.render('student/courseList', {});
+    res.render('student/courseList', {isLoggedIn: false, isInstructor: true});
   })
 
 router
