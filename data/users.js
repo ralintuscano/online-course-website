@@ -10,19 +10,12 @@ function ValidateEmail(mail) {
   return mailformat.test(mail);
 }
 
-//validate phonenumber
-// function phonenumber(inputtxt) {
-//   var phoneno = /^\d{10}$/;
-//   return /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(inputtxt);
-
-// }
-
-//chech phone
-// function phonenumber(phone) {
-//   const regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-//   return regex.test(phone);
-//   //console.log(regex.test(phone))
-// }
+//  phonenumber validation
+function ValidatePhonenumber(phone) {
+  const regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+  return regex.test(phone);
+  //console.log(regex.test(phone))
+}
 
 //space check
 function hasWhiteSpace(s) {
@@ -95,19 +88,18 @@ const createUser = async (
       validation_error: "The length of the Password must be greater than 6 ",
     };
   }
-  if (ValidateEmail(emailData)) {
+  if (ValidateEmail(emailData) == false) {
     return {
       validation_error: "You have entered an invalid email address! ",
     };
   }
 
-  // if (phonenumber(phonenumberData)) {
-  //   return {
-  //     validation_error: "You have entered an invalid phoone number! ",
-  //   };
-  // }
-
-  //check phone number
+  // validate phonenumber
+  function ValidatePhonenumber(phone) {
+    const regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    return regex.test(phone);
+    //console.log(regex.test(phone))
+  }
 
   //verify user does not exist in db
   doesUserExist = await getUserByUsername(usernameData);
