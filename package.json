@@ -1,7 +1,7 @@
 {
-  "name": "cs-546-lab-10",
+  "name": "online-course-website-1.0",
   "version": "1.0.0",
-  "description": "My lab 10  module",
+  "description": "My Project Online Course Website",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"

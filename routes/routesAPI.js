@@ -39,8 +39,10 @@ router.route("/profile").get(async (req, res) => {
 
 router.route("/home").get(async (req, res) => {
   //code here for GET
+
   if (req.session.user) {
-    res.render("home", { title: "Home Page" });
+    fname: req.session.fname,
+      res.render("home", { title: "Home Page", fname: req.session.fname });
   } else {
     res.render("userLogin", { title: "login" });
   }
@@ -169,6 +171,7 @@ router
         phone_data,
         password_data
       );
+
       console.log("registration_response", registration_response);
 
       if ("inserted_user" in registration_response) {
@@ -243,6 +246,12 @@ router.route("/login").post(async (req, res) => {
 
     if ("authenticatedUser" in registration_response) {
       //create a session
+      console.log(
+        "my user logged in=",
+        registration_response.data._id.toString()
+      );
+      req.session.idData = registration_response.data._id;
+      // req.session.id = registration_response.data._id;
       req.session.fname = registration_response.data.firstnameData;
       req.session.lname = registration_response.data.lastnameData;
       req.session.user = registration_response.data.usernameData;
@@ -301,4 +310,115 @@ router.route("/logout").get(async (req, res) => {
   req.session.destroy();
   res.render("logout", { title: "Logout" });
 });
+
+//edit user
+router.route("/editUser").get(async (req, res) => {
+  //code here for GET
+  //
+  if (req.session.user) {
+    res.render("editUser", {
+      title: "Edit user page",
+      date_time: date_time,
+      fname: req.session.fname,
+      lname: req.session.lname,
+      user: req.session.user,
+      email: req.session.email,
+      dob: req.session.dob,
+      gender: req.session.gender,
+      saddress: req.session.saddress,
+      city: req.session.city,
+      zipcode: req.session.zipcode,
+      country: req.session.country,
+      phonenumber: req.session.phonenumber,
+    });
+  } else {
+    res.render("userLogin", { title: "login" });
+  }
+});
+
+//update user
+router.post("/updateUser", async (req, res) => {
+  //code here for POST
+  //get data and save to database
+
+  const id_data = req.session.idData;
+  console.log("id passed is", id_data);
+  //fname+lname
+  const fname_data = req.body.firstnameInput;
+  const lname_data = req.body.lastnameInput;
+
+  //username
+  const user_data = req.body.userInput;
+
+  //email
+  const email_data = req.body.emailInput;
+
+  //dob
+  const dob_data = req.body.dobInput;
+
+  //gender
+  const gender_data = req.body.genderInput;
+
+  //address
+  const street_address_data = req.body.addressInput;
+  const city_data = req.body.cityInput;
+  const postal_code_data = req.body.zipcodeInput;
+  const country_data = req.body.countryInput;
+
+  //phone
+  const phone_data = req.body.phonenumberInput;
+
+  //password
+  const password_data = req.body.passwordInput;
+  // res.render("userRegister", { user: data });
+
+  //printing user data
+
+  try {
+    //Create a User by sending u and p.
+    var registration_response = await userss.updateRecord(
+      id_data,
+      fname_data,
+      lname_data,
+      dob_data,
+      gender_data,
+      street_address_data,
+      city_data,
+      postal_code_data,
+      country_data
+    );
+    console.log("registration_response", registration_response);
+
+    if ("updatedInfo" in registration_response) {
+      //create a session
+
+      req.session.idData = registration_response.data._id;
+      // req.session.id = registration_response.data._id;
+      req.session.fname = registration_response.data.firstnameData;
+      req.session.lname = registration_response.data.lastnameData;
+      req.session.user = registration_response.data.usernameData;
+      req.session.email = registration_response.data.emailData;
+      req.session.dob = registration_response.data.dobData;
+      req.session.gender = registration_response.data.genderData;
+      req.session.saddress = registration_response.data.streetaddressData;
+      req.session.city = registration_response.data.cityData;
+      req.session.zipcode = registration_response.data.zipcodeData;
+      req.session.country = registration_response.data.country;
+      req.session.phonenumber = registration_response.data.phonenumberData;
+      //req.session.user = user_data;
+      res.redirect("/profile");
+    } else if ("validation_error" in registration_response) {
+      res.status(400);
+      res.render("editUser", {
+        title: "edit user",
+        error_msg: registration_response.validation_error,
+      });
+    } else {
+      res.render("userLogin", { title: "login" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 module.exports = router;

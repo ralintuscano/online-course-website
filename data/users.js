@@ -5,6 +5,11 @@ var bcrypt = require("bcryptjs");
 var salt = bcrypt.genSaltSync(10);
 
 //email validation
+// function ValidateEmail(mail) {
+//   console.log(mail);
+//   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+//   return mailformat.test(mail);
+// }
 function ValidateEmail(email_id) {
   const regex_pattern =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -12,8 +17,14 @@ function ValidateEmail(email_id) {
   return regex_pattern.test(email_id);
 }
 
+//validate phonenumber
+// function phonenumber(inputtxt) {
+//   var phoneno = /^\d{10}$/;
+//   return /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(inputtxt);
 
-// validate phonenumber
+// }
+
+//chech phone
 function ValidatePhonenumber(phone) {
   const regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
   return regex.test(phone);
@@ -255,4 +266,88 @@ const getUserById = async (id) => {
   return userr_id;
 };
 
-module.exports = { createUser, checkUser };
+//update record
+// const updateRecord = async (
+//   id,
+//   firstnameData,
+//   lastnameData,
+//   usernameData,
+//   emailData,
+//   dobData,
+//   genderData,
+//   streetaddressData,
+//   cityData,
+//   zipcodeData,
+//   country,
+//   phonenumberData,
+//   passwordData
+// ) => {
+
+// };
+
+const updateRecord = async (
+  id,
+  firstnameData,
+  lastnameData,
+  dobData,
+  genderData,
+  streetaddressData,
+  cityData,
+  zipcodeData,
+  country
+) => {
+  if (firstnameData.length <= 0) {
+    return {
+      validation_error: "The length of the first must be greater than 0! ",
+    };
+  }
+  if (lastnameData.length < 4) {
+    return {
+      validation_error: "The length of the lastname must be greater than 0!",
+    };
+  }
+  // //verify user does not exist in db
+  // doesUserExist = await getUserByUsername(usernameData);
+
+  // if (doesUserExist == null) {
+  //user does not exist, therefore save record
+  let updateUser;
+  updateUser = {
+    firstnameData: firstnameData,
+    lastnameData: lastnameData,
+    dobData: dobData,
+    genderData: genderData,
+    streetaddressData: streetaddressData,
+    cityData: cityData,
+    zipcodeData: zipcodeData,
+    country: country,
+  };
+  console.log("update_user", updateUser);
+
+  // console.log("_id", _id);
+  console.log("id", id);
+
+  const userCollection = await users();
+
+  // { _id: ObjectId(id) },
+  // { _id: id },
+  const updatedInfo = await userCollection.updateOne(
+    { _id: ObjectId(id) },
+    { $set: updateUser }
+  );
+
+  if (updatedInfo.modifiedCount === 0) {
+    // throw "could not update user successfully";
+    return {
+      validation_error: "could not update user successfully",
+    };
+  }
+
+  var userCheck = await getUserById(id);
+  //login success
+  return { updatedInfo: true, data: userCheck };
+
+  // return { error: true };
+};
+
+module.exports = { createUser, checkUser, updateRecord };
