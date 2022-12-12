@@ -7,6 +7,9 @@ router.route("/").get(async (req, res) => {
   //code here for GET
   console.log("REQYEST ",req.session.user );
   if (req.session.user) {
+    if (req.session.isInstructor) {
+      res.redirect("/teacher")
+    }
     res.redirect("/student");
   } else {
     res.render("userLogin", { title: "login" });
