@@ -5,16 +5,9 @@ var bcrypt = require("bcryptjs");
 var salt = bcrypt.genSaltSync(10);
 
 //email validation
-// function ValidateEmail(mail) {
-//   console.log(mail);
-//   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-//   return mailformat.test(mail);
-// }
-function ValidateEmail(email_id) {
-  const regex_pattern =
-    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  return regex_pattern.test(email_id);
+function ValidateEmail(mail) {
+  var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return mailformat.test(mail);
 }
 
 //validate phonenumber
@@ -25,11 +18,11 @@ function ValidateEmail(email_id) {
 // }
 
 //chech phone
-function ValidatePhonenumber(phone) {
-  const regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-  return regex.test(phone);
-  //console.log(regex.test(phone))
-}
+// function phonenumber(phone) {
+//   const regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+//   return regex.test(phone);
+//   //console.log(regex.test(phone))
+// }
 
 //space check
 function hasWhiteSpace(s) {
@@ -102,17 +95,17 @@ const createUser = async (
       validation_error: "The length of the Password must be greater than 6 ",
     };
   }
-  if (ValidateEmail(emailData) == false) {
+  if (ValidateEmail(emailData)) {
     return {
       validation_error: "You have entered an invalid email address! ",
     };
   }
 
-  if (ValidatePhonenumber(phonenumberData) == false) {
-    return {
-      validation_error: "You have entered an invalid phoone number! ",
-    };
-  }
+  // if (phonenumber(phonenumberData)) {
+  //   return {
+  //     validation_error: "You have entered an invalid phoone number! ",
+  //   };
+  // }
 
   //check phone number
 

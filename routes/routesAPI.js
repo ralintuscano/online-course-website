@@ -39,10 +39,8 @@ router.route("/profile").get(async (req, res) => {
 
 router.route("/home").get(async (req, res) => {
   //code here for GET
-
   if (req.session.user) {
-    fname: req.session.fname,
-      res.render("home", { title: "Home Page", fname: req.session.fname });
+    res.render("home", { title: "Home Page" });
   } else {
     res.render("userLogin", { title: "login" });
   }
@@ -420,5 +418,4 @@ router.post("/updateUser", async (req, res) => {
     console.log(e);
   }
 });
-
 module.exports = router;
