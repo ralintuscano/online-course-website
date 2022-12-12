@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>courseList</title>
+  <meta charset="utf-8">
+        <h1>CourseList</h1>
+        <ul>
+          <li><a href="/">courses</a></li>
+          <li><a href="/AddResource">Add resources</a></li>
+        </ul>
+
+  <body>
+
+<h1><%=hsc%></h1>
+
+<%for(let i=0;i<Newcourses.length;i++){%>
+   <h1><%=Newcourses[i].title%></h1>
+   <p><a href="/resources/<%=Newcourses[i]._id%>">To the course Resources</a></p>
+<%}%>
+</body>
+</html>
