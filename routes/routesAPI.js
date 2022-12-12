@@ -1,13 +1,13 @@
 //require express, express router and bcrypt as shown in lecture code
-const e = require("express");
 const express = require("express");
 const router = express.Router();
-const userss = require("../data/users");
+const users = require("../data/users");
 
 router.route("/").get(async (req, res) => {
   //code here for GET
+  console.log("REQYEST ",req.session.user );
   if (req.session.user) {
-    res.redirect("/protected");
+    res.redirect("/student");
   } else {
     res.render("userLogin", { title: "login" });
   }
@@ -194,7 +194,7 @@ router
 
     try {
       //Create a User by sending u and p.
-      var registration_response = await userss.createUser(
+      var registration_response = await users.createUser(
         fname_data,
         lname_data,
         user_data,
@@ -251,6 +251,9 @@ router.route("/login").post(async (req, res) => {
   //username
   const user_data = req.body.usernameInput;
 
+  //dropdown student/teacher
+  const isInstructor = req.body.personInput === 'Instructor';
+
   //email
   const email_data = req.body.emailInput;
 
@@ -274,7 +277,7 @@ router.route("/login").post(async (req, res) => {
 
   try {
     //Create a User by sending u and p.
-    var registration_response = await userss.checkUser(
+    var registration_response = await users.checkUser(
       user_data,
       password_data
     );
@@ -282,6 +285,7 @@ router.route("/login").post(async (req, res) => {
 
     if ("authenticatedUser" in registration_response) {
       //create a session
+      req.session.isInstructor = isInstructor;
       req.session.fname = registration_response.data.firstnameData;
       req.session.lname = registration_response.data.lastnameData;
       req.session.user = registration_response.data.usernameData;
@@ -294,6 +298,7 @@ router.route("/login").post(async (req, res) => {
       req.session.country = registration_response.data.country;
       req.session.phonenumber = registration_response.data.phonenumberData;
       //req.session.user = user_data;
+
       res.redirect("/");
     } else if ("validation_error" in registration_response) {
       res.status(400);
