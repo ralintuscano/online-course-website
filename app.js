@@ -11,10 +11,6 @@ const hbshelpers = require('handlebars-helpers');
 const configRoutes = require('./routes');
 // const helpersDM = require('./')
 
-
-
-const exphbs = require("express-handlebars");
-
 app.use("/public", static);
 
 //app.use("/public", static);
