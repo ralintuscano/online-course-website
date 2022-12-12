@@ -1,23 +1,40 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Login App</title>
-    <link rel="stylesheet" href="public/css/main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
 
-</head>
-<body>
-       <main>
-        {{!-- {{#if renderNav}}
-            {{> navigation}}
-        {{/if}} --}}
-        
-        {{{body}}}
+    {{! style sheets }}
+    {{! <meta name="viewport" content="width=device-width, initial-scale=1" /> }}
+
+    {{! link to css }}
+    {{! <link rel="stylesheet" href="/public/main.css" /> }}
+    <link rel="stylesheet" href="/public/css/styles.css" />'
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+
+    <style>
+      p.dotted {border-style: dotted;} p.dashed {border-style: dashed;} p.solid
+      {border-style: solid;}
+
+    </style>
+
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+    ></script>
+
+    <title>{{title}}</title>
+  </head>
+  <body>
+    <main>
+      {{! <div class="center-screen"> }}
+
+      {{{body}}}
+
     </main>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
-</body>
+  </body>
+
 </html>

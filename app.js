@@ -1,4 +1,6 @@
-const express = require('express');
+// Setup server, session and middleware here.
+// Setup server, session and middleware here.
+const express = require("express");
 const app = express();
 const session = require('express-session');
 const static = express.static(__dirname + '/public');
@@ -11,13 +13,11 @@ const configRoutes = require('./routes');
 
 
 
-const myLogger = function (req, res, next) {
-    console.log(`[${new Date().toUTCString()} ]: ${req.method} ${req.originalUrl} ${  req.session.user ? '':'Non-' }Authenticated User`);
-    next();
-}
+const exphbs = require("express-handlebars");
 
-app.use(express.json());
+app.use("/public", static);
 
+//app.use("/public", static);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
@@ -59,25 +59,39 @@ app.use;
 
 app.use('/public', static);
 
+app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
-app.use(session({
-    name: 'AuthCookie',
-    secret: 'some secret string!',
+app.use(
+  session({
+    name: "AuthCookie",
+    secret: "some secret string!",
     resave: false,
     saveUninitialized: true,
-    cookie: {maxAge: 60000}
-
-  }));
-
-app.use(myLogger);
+  })
+);
 
 app.use('/protected', (req, res, next) => {
   if (!req.session.user) {
     return res.status(403).render('forbiddenAccess');
   } else {
     next();
+  }});
+//middleware
+const myLogger = function (req, res, next) {
+  auth = "(Non-Authenticated User)";
+  if (req.session.user) {
+    auth = "(Authenticated User)";
   }
-});
+  console.log(
+    "[" + new Date().toUTCString() + "]: ",
+    req.method,
+    req.originalUrl,
+    auth
+  );
+  next();
+};
+app.use(myLogger);
 
 app.engine('handlebars', handlebarsInstance.engine);
 
@@ -91,5 +105,5 @@ configRoutes(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");
-  console.log('Your routes will be running on http://localhost:3000');
+  console.log("Your routes will be running on http://localhost:3000");
 });
