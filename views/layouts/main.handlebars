@@ -1,16 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Login App</title>
-    {{!-- <link rel="stylesheet" href="/public/css/main.css"> --}}
-</head>
-<body>
-   
-    
-    <h3>Authentication and Middleware</h3>
+{{! This will be your default layout for all handlebars file rendered. This will be inherited by all other templates. }}
+{{! Refer lecture code to learn more on how this works }}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    {{! style sheets }}
+    {{! <meta name="viewport" content="width=device-width, initial-scale=1" /> }}
+
+    {{! link to css }}
+    {{! <link rel="stylesheet" href="/public/main.css" /> }}
+    <link rel="stylesheet" href="/public/css/styles.css" />'
+
+    <style>
+      p.dotted {border-style: dotted;} p.dashed {border-style: dashed;} p.solid
+      {border-style: solid;}
+
+    </style>
+
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+    ></script>
+
+    <title>{{title}}</title>
+  </head>
+  <body>
     <main>
-        {{{body}}}
+      {{! <div class="center-screen"> }}
+
+      {{{body}}}
+
     </main>
-</body>
+  </body>
 </html>
