@@ -1,0 +1,57 @@
+<div>
+    <form actions="/quizResults" class="form" id="form_quiz" method="post">
+    <div id="quiz">
+        <ul id="quiz_questions" class="list-group">
+                {{#each questions}}
+
+                    <li class="list-group-item">
+                        <a href="" class="">{{ question  }}</a>
+
+                        {{#eachProperty answers}}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value="" id="flexRadioDefault">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    {{value}}
+                                </label>
+                            </div>
+                        {{/eachProperty}}
+                        
+                    </li>
+
+                {{/each}}
+            </ul>
+            
+            <button id="submit">Get Results</button>
+            <div id="results"></div>
+    </div>
+    </form>
+    <script>
+        let questions = document.getElementById("quiz_questions").getElementsByTagName("li").length;
+        console.log("Questions", questions)
+        document.querySelector('#form_quiz').addEventListener('submit', function(e){
+            //prevent default action
+                
+            e.preventDefault();
+
+            alert("Form has been submitted")
+        })
+    </script>
+</div>
+
+
+{{!-- try {
+                const response = await axios.post("https://reqbin.com/echo/post/json", user);
+                console.log("Request successful!");
+            } catch (error) {
+                if (error.response) {
+                console.log(error.reponse.status);
+                } else {
+                console.log(error.message);
+                }
+            } --}}
+ {{!-- let formVal = new octaValidate('form_register');
+
+    if(formVal.validate() === true){
+        alert('form has been submitted');
+    }else{
+    } --}}

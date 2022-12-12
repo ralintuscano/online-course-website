@@ -40,6 +40,14 @@ const handlebarsInstance = exphbs.create({
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
 
       return new Handlebars.SafeString(JSON.stringify(obj));
+    },
+    eachProperty: (context, options) => {
+      var ret = "";
+      for(var prop in context)
+      {
+          ret = ret + options.fn({property:prop,value:context[prop]});
+      }
+      return ret;
     }
   }
 });

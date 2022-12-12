@@ -22,8 +22,28 @@ router.get('/static', (req, res) => {
 router
   .route('/')
   .get(async (req, res) => {
+    var questions = [
+      {
+        question: "What is 10/2?",
+        answers: {
+          a: '3',
+          b: '5',
+          c: '115'
+        },
+        correctAnswer: 'b'
+      },
+      {
+        question: "What is 30/3?",
+        answers: {
+          a: '3',
+          b: '5',
+          c: '10'
+        },
+        correctAnswer: 'c'
+      }
+    ];
    
-    res.render('student/courseList', {isLoggedIn: false, isInstructor: true});
+    res.render('student/quizPage', {questions, isLoggedIn: true, isInstructor: true});
   })
 
 router
