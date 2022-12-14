@@ -1,5 +1,7 @@
-const users = require('./users');
+const teachersData = require('./teachers')
 
-module.exports = {
-    users: users
-};
+
+
+moudule.exports = {
+    teachers: teachersData
+}
