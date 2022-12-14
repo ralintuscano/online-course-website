@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>courseList</title>
+  <meta charset="utf-8">
+        <h1>CourseList</h1>
+        <ul>
+          <li><a href="/">courses</a></li>
+          <li><a href="/AddResource">Add resources</a></li>
+        </ul>
+
+  <body>
+
+<h1>{{hsc}}</h1>
+
+{{#each Newcourses}}
+   <h1>{{Newcourses.title}}</h1>
+   <p><a href="/resources/{{Newcourses._id}}">To the course Resources</a></p>
+{{/each}}
+</body>
+</html>
