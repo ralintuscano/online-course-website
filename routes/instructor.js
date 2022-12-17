@@ -2,22 +2,23 @@
 const e = require("express");
 const express = require("express");
 const router = express.Router();
-const userss = require("../data/users");
+const intructors = require("../data/instructor");
 
 router.route("/").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.redirect("/protected");
+    userType: req.session.userType, res.redirect("/instructor/protected");
   } else {
-    res.render("userLogin", { title: "User Login" });
+    res.render("instructorLogin", { title: "instructor Login" });
   }
 });
 
 //profile route
-router.route("/profile").get(async (req, res) => {
+router.route("/instructor/profile").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
     res.render("user_profile", {
+      userType: req.session.userType,
       title: "profile page",
       date_time: date_time,
       fname: req.session.fname,
@@ -33,18 +34,22 @@ router.route("/profile").get(async (req, res) => {
       phonenumber: req.session.phonenumber,
     });
   } else {
-    res.render("userLogin", { title: "User Login" });
+    res.render("instructorLogin", { title: "instructor Login" });
   }
 });
 
-router.route("/home").get(async (req, res) => {
+router.route("/instructor/IntructorHome").get(async (req, res) => {
   //code here for GET
 
   if (req.session.user) {
-    fname: req.session.fname,
-      res.render("home", { title: "Home Page", fname: req.session.fname });
+    // fname: req.session.fname,
+    userType: req.session.userType,
+      res.render("instructor_settings/instructorHome", {
+        title: "Home Page",
+        fname: req.session.fname,
+      });
   } else {
-    res.render("userLogin", { title: "User Login" });
+    res.render("instructorLogin", { title: "instructor Login" });
   }
 });
 
@@ -52,9 +57,10 @@ router.route("/home").get(async (req, res) => {
 router.route("/mycourse_list").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("mycourse_list", { title: "My Course List Page" });
+    userType: req.session.userType,
+      res.render("mycourse_list", { title: "My Course List Page" });
   } else {
-    res.render("userLogin", { title: "User Login" });
+    res.render("instructorLogin", { title: "instructor Login" });
   }
 });
 
@@ -62,29 +68,32 @@ router.route("/mycourse_list").get(async (req, res) => {
 router.route("/aboutpage").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("aboutpage", { title: "About Page" });
+    userType: req.session.userType,
+      res.render("aboutpage", { title: "About Page" });
   } else {
-    res.render("userLogin", { title: "User Login" });
+    res.render("instructorLogin", { title: "instructor Login" });
   }
 });
 
 // route to my connect // social media
-router.route("/social_media").get(async (req, res) => {
-  //code here for GET
-  if (req.session.user) {
-    res.render("social_media", { title: "Social Media Page" });
-  } else {
-    res.render("userLogin", { title: "User Login" });
-  }
-});
+// router.route("/social_media").get(async (req, res) => {
+//   //code here for GET
+//   if (req.session.user) {
+//     userType: req.session.userType,
+//       res.render("social_media", { title: "Social Media Page" });
+//   } else {
+//     res.render("instructorLogin", { title: "instructor Login" });
+//   }
+// });
 
 // route to my feedbackform
 router.route("/feedbackform").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("feedbackform", { title: "Feedback Form Page" });
+    userType: req.session.userType,
+      res.render("feedbackform", { title: "Feedback Form Page" });
   } else {
-    res.render("userLogin", { title: "User Login" });
+    res.render("instructor Login", { title: "instructorLogin" });
   }
 });
 
@@ -92,20 +101,21 @@ router.route("/feedbackform").get(async (req, res) => {
 router.route("/ask_question").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("ask_question", { title: "Ask Question Page" });
+    userType: req.session.userType,
+      res.render("ask_question", { title: "Ask Question Page" });
   } else {
-    res.render("userLogin", { title: "User Login" });
+    res.render("instructorLogin", { title: "instructor Login" });
   }
 });
 
 router
-  .route("/register")
+  .route("/instructor/register")
   .get(async (req, res) => {
     //code here for GET
     if (req.session.user) {
-      res.redirect("/protected");
+      userType: req.session.userType, res.redirect("/instructor/protected");
     } else {
-      res.render("userRegister", { title: "register" });
+      res.render("instructorRegister", { title: "register" });
     }
   })
   .post(async (req, res) => {
@@ -157,7 +167,7 @@ router
 
     try {
       //Create a User by sending u and p.
-      var registration_response = await userss.createUser(
+      var registration_response = await intructors.createUser(
         fname_data,
         lname_data,
         user_data,
@@ -175,7 +185,7 @@ router
       console.log("registration_response", registration_response);
 
       if ("inserted_user" in registration_response) {
-        res.redirect("/");
+        userType: req.session.userType, res.redirect("/instructor");
       } else if ("user_exists" in registration_response) {
         res.status(400);
         res.render("userRegister", {
@@ -238,7 +248,7 @@ router.route("/login").post(async (req, res) => {
 
   try {
     //Create a User by sending u and p.
-    var registration_response = await userss.checkUser(
+    var registration_response = await intructors.checkUser(
       user_data,
       password_data
     );
@@ -250,6 +260,7 @@ router.route("/login").post(async (req, res) => {
         "my user logged in=",
         registration_response.data._id.toString()
       );
+      req.session.userType = "instructor";
       req.session.idData = registration_response.data._id;
       // req.session.id = registration_response.data._id;
       req.session.fname = registration_response.data.firstnameData;
@@ -264,11 +275,11 @@ router.route("/login").post(async (req, res) => {
       req.session.country = registration_response.data.country;
       req.session.phonenumber = registration_response.data.phonenumberData;
       //req.session.user = user_data;
-      res.redirect("/");
+      res.redirect("/instructor");
     } else if ("validation_error" in registration_response) {
       res.status(400);
-      res.render("userLogin", {
-        title: "User Login",
+      res.render("instructorLogin", {
+        title: "instructor Login",
         error_msg: registration_response.validation_error,
       });
     }
@@ -277,25 +288,26 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-router.route("/protected").get(async (req, res) => {
+router.route("/instructor/protected").get(async (req, res) => {
   //code here for GET
   date_time = Date();
   if (req.session.user) {
-    res.render("private", {
-      title: "Welcome",
-      date_time: date_time,
-      fname: req.session.fname,
-      lname: req.session.lname,
-      user: req.session.user,
-      email: req.session.email,
-      dob: req.session.dob,
-      gender: req.session.gender,
-      saddress: req.session.saddress,
-      city: req.session.city,
-      zipcode: req.session.zipcode,
-      country: req.session.country,
-      phonenumber: req.session.phonenumber,
-    });
+    userType: req.session.userType,
+      res.render("instructor_settings/instructorHome", {
+        title: "Welcome",
+        date_time: date_time,
+        fname: req.session.fname,
+        lname: req.session.lname,
+        user: req.session.user,
+        email: req.session.email,
+        dob: req.session.dob,
+        gender: req.session.gender,
+        saddress: req.session.saddress,
+        city: req.session.city,
+        zipcode: req.session.zipcode,
+        country: req.session.country,
+        phonenumber: req.session.phonenumber,
+      });
   } else {
     res.render("forbiddenAccess", { title: "Error" });
   }
@@ -332,7 +344,7 @@ router.route("/editUser").get(async (req, res) => {
       phonenumber: req.session.phonenumber,
     });
   } else {
-    res.render("userLogin", { title: "User Login" });
+    res.render("instructorLogin", { title: "instructor Login" });
   }
 });
 
@@ -376,7 +388,7 @@ router.post("/updateUser", async (req, res) => {
 
   try {
     //Create a User by sending u and p.
-    var registration_response = await userss.updateRecord(
+    var registration_response = await intructors.updateRecord(
       id_data,
       fname_data,
       lname_data,
@@ -391,8 +403,8 @@ router.post("/updateUser", async (req, res) => {
 
     if ("updatedInfo" in registration_response) {
       //create a session
-
-      req.session.idData = registration_response.data._id;
+      userType: req.session.userType,
+        (req.session.idData = registration_response.data._id);
       // req.session.id = registration_response.data._id;
       req.session.fname = registration_response.data.firstnameData;
       req.session.lname = registration_response.data.lastnameData;
@@ -406,7 +418,7 @@ router.post("/updateUser", async (req, res) => {
       req.session.country = registration_response.data.country;
       req.session.phonenumber = registration_response.data.phonenumberData;
       //req.session.user = user_data;
-      res.redirect("/profile");
+      res.redirect("/instructor/profile");
     } else if ("validation_error" in registration_response) {
       res.status(400);
       res.render("editUser", {
@@ -414,7 +426,7 @@ router.post("/updateUser", async (req, res) => {
         error_msg: registration_response.validation_error,
       });
     } else {
-      res.render("userLogin", { title: "User Login" });
+      res.render("instructorLogin", { title: "instructor Login" });
     }
   } catch (e) {
     console.log(e);

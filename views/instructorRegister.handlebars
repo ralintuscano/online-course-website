@@ -13,19 +13,22 @@ You will also have a link on this page that links to '/' and has the text "Alrea
 }}
 
 <main>
-  <h1>User Register Page</h1>
+  <h1>Instructor Register Page</h1>
   <p>Register on our website</p>
 
   <span style="color: red;"> {{error_msg}} </span>
 
   <div class="inputFieldsId" id="inputFieldsId">
+
     <form
       id="registartion-form"
       autocomplete="on"
       method="post"
-      action="/register"
+      action="/instructor/register"
     >
-      <br />
+   
+  <br />
+
       {{!-- first name --}}
        <div>
         <label for="firstname">First Name* :</label>
@@ -96,13 +99,15 @@ You will also have a link on this page that links to '/' and has the text "Alrea
         name="passwordInput"
         placeholder="Password"
       /></div>
+
+     
+
          <br />
 
-    <br />
-  
-  <a href="/instructor/register">Click here for Intructor Register Page &#128072;</a><br /><br />
+   <a href="/register">Click here for User register Page &#128072;</a>
+    <br /><br />
 
-      <div>
+<div>
       <input id="submit-button"  type="submit" value="Submit" class="mysubmit" />
       </div><br/>
 
@@ -118,7 +123,7 @@ You will also have a link on this page that links to '/' and has the text "Alrea
 
 </main>
 
-<a href="/" id="hrefid"> <br />Already have an account? Click here to log-in  &#128072;</a><br />
+<a href="/" id="hrefid"> <br />Already have an account? Click here to log-in  &#128072;</a> <br />
 
-<a href="/instructor/" id="hrefid"> <br />Already have an account? Click here to Instructor Login &#128072;</a> <br /><br />
+<a href="/instructor/" id="hrefid"> <br />Already have an account? Click here to Instructor log-in  &#128072; </a><br /><br />
 

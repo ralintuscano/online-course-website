@@ -1,0 +1,43 @@
+{{> page/head_nav}}
+ {{!-- {{> page/sidenavigation}} --}}
+ {{#if userType}}
+   {{> instructor_page/sidenavigation}}
+{{else}}
+ {{> page/sidenavigation}}
+{{/if}}
+
+
+ <div class="main_content">
+        <div class="header">Not connected to database,later part of development.</div>
+       
+       <div class="info">
+
+<form>
+  {{! first name }}
+  <label for="coursename">Course Name* :</label>
+  <input
+    type="text"
+    id="coursenameInput"
+    name="coursenameInput"
+    autocomplete="name"
+    enterkeyhint="next"
+    action="/instructor/instructorHome" method="post"
+  />
+   <label for="description:">Description</label>
+   <br />
+  <textarea
+    id="descriptionInput"
+    name="descriptionInput"
+    placeholder="Write something.."
+    style="height:100px"></textarea>
+   <br /> <br />
+
+    <label for="homepage">Add your homepage:</label>
+  <input type="url" id="homepage" name="homepage"><br><br>
+
+  <input type="submit" value="Submit" />
+</form>
+</div>
+      </div>
+
+{{> page/footer}}

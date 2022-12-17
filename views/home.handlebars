@@ -7,10 +7,10 @@
 {{/if}}
 
 
-<div class="main_content">
-        <div class="header">Welcome, {{fname}}.</div>
+ <div class="main_content">
+        <div class="header">Hi,{{fname}}.</div>
         <div class="info">
-          <div>Welcome to the new "Online Course Website". This will be your platform to all the tutorials we offer and your learning progress.
+  <div>Welcome to the new "Online Course Website". This will be your platform to all the courses we offer and your learning progress.
            If you are new to online course, we recommend you to start with our <b>html</b> tutorial.
           </div>
           <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A sed
@@ -40,5 +40,45 @@
         </div>
       </div>
 
+{{> page/footer}}
 
 
+
+{{!-- {{> instructor_page/head_nav}}
+ {{> instructor_page/sidenavigation}}
+
+
+ <div class="main_content">
+        <div class="header">Not connected to database,later part of development.</div>
+       
+       <div class="info">
+
+<form>
+  {{! first name }}
+  <label for="coursename">Course Name* :</label>
+  <input
+    type="text"
+    id="coursenameInput"
+    name="coursenameInput"
+    autocomplete="name"
+    enterkeyhint="next"
+    action="/instructor/instructorHome" method="post"
+  />
+   <label for="description:">Description</label>
+   <br />
+  <textarea
+    id="descriptionInput"
+    name="descriptionInput"
+    placeholder="Write something.."
+    style="height:100px"></textarea>
+   <br /> <br />
+
+    <label for="homepage">Add your Url:</label>
+  <input type="url" id="urlInput" name="urlInput"><br><br>
+
+  <input type="submit" value="Submit" />
+</form>
+</div>
+      </div>
+
+{{> instructor_page/footer}} --}}

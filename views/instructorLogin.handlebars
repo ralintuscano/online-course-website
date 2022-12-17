@@ -1,0 +1,58 @@
+<main>
+  <div class="info">
+    <br />
+    <h3>Welcome to Online Course Website Project</h3>
+    <p>
+      Online Course Website is a Learning platform. Where instructor can create
+      a new courses and students can register for the courses, and students can
+      take quizz exams on the course.
+    </p>
+
+  </div>
+  <br />
+  <h1 class="solid"> Instructor Login Page</h1>
+  <br />
+
+  <p>Enter Instructor username and password to know more about user.</p>
+  <br />
+  <span style="color: red;"> {{error_msg}} </span>
+  <form
+    id="login-form"
+    autocomplete="off"
+    method="post"
+    action="/instructor/login"
+  >
+    <label for="usernameInput">Username</label>
+    <input
+      id="usernameInput"
+      type="text"
+      name="usernameInput"
+      placeholder="Username"
+    />
+    <br /><br />
+    <label for="password">Password</label>
+    <input
+      id="passwordInput"
+      type="password"
+      name="passwordInput"
+      placeholder="Password"
+    />
+    <br /><br />
+
+    {{! <select name="personInput" id="personInput">
+      <option value="Instructor">Student Login Page</option>
+    </select> }}
+    <a href="/"> For Student Login page Click Here &#128072;</a><br />
+
+    <button class="button" id="login-button" type="submit">Login</button>
+
+  </form>
+
+  {{#if error}}
+    <h6>{{error}}</h6>
+  {{/if}}
+  <br /><br />
+  <a href="/register">Click here to User register!</a><br /><br />
+  <a href="/instructor/register">Click here to Intructor Register</a>
+
+</main>
