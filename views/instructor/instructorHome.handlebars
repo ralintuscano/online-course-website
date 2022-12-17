@@ -1,0 +1,40 @@
+{{> instructor_page/head_nav}}
+ {{> instructor_page/sidenavigation}}
+
+
+<div class="main_content">
+        <div class="header">Hello {{name}}, Plaease give us your valuable feedback.</div>
+       
+       <div class="info">
+
+<form id="registartion-form"
+      autocomplete="on"
+      method="post"
+      action="/instructor/instructorFeedbackform">
+  {{! first name }}
+  <label for="firstname">Full Name* :</label>
+  <input
+    type="text"
+    id="fullnameInput"
+    name="fullnameInput"
+    autocomplete="name"
+    enterkeyhint="next"
+    value="{{name}}"
+  />
+   <br /> <br />
+{{!-- select country --}}
+ 
+{{!-- write a message --}}
+ <label for="message">Message:</label>
+ <p></p>
+  <textarea id="messageInput" name="messageInput" rows="4" cols="50" placeholder=" Write a Message."></textarea>
+  <br>
+
+ <br />
+  <input type="submit" value="Submit" />
+</form>
+</div>
+      </div>
+
+
+{{> instructor_page/footer}}

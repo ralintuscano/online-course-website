@@ -1,0 +1,72 @@
+{{!
+
+If the user is logged in, and 'GET /protected' endpoint is called, you will render this view that displays:
+-Username (which you stored in the session when they logged in) for the currently logged in user
+-The current date/time
+
+Also, you will need to have a hyperlink at the bottom of the page to /logout.
+
+
+}}
+<hr/>
+{{!-- {{> partial}} --}}
+{{> page/head_nav}}
+ {{> page/sidenavigation}}
+
+
+
+
+{{!-- {{> page/nav}} --}}
+
+{{!-- <h1>Welcome</h1>
+<h2>First Name: {{fname}}</h2>
+<h2>Last Name: {{lname}}</h2>
+<h2>Username: {{user}}</h2>
+<h2>Email Address: {{email}}</h2>
+<h2>Dat of Birth: {{dob}}</h2>
+<h2>Gender: {{gender}}</h2>
+<h2>Street Address: {{saddress}}</h2>
+<h2>City: {{city}}</h2>
+<h2>ZIP Code: {{zipcode}}</h2>
+<h2>Country: {{country}}</h2>
+<h2>Phone Number: {{phonenumber}}</h2>
+
+<h2>Current Date/Time : {{date_time}}</h2>
+
+<a href="/logout">Logout</a> --}}
+
+<div class="main_content">
+        <div class="header">Welcome, {{fname}}.</div>
+        <div class="info">
+          <div>Welcome to the new "Online Course Website". This will be your platform to all the tutorials we offer and your learning progress.
+           If you are new to online course, we recommend you to start with our <b>html</b> tutorial.
+          </div>
+          <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A sed
+            nobis ut exercitationem atque accusamus sit natus officiis totam
+            blanditiis at eum nemo, nulla et quae eius culpa eveniet
+            voluptatibus repellat illum tenetur, facilis porro. Quae fuga odio
+            perferendis itaque alias sint, beatae non maiores magnam ad, veniam
+            tenetur atque ea exercitationem earum eveniet totam ipsam magni
+            tempora aliquid ullam possimus? Tempora nobis facere porro,
+            praesentium magnam provident accusamus temporibus! Repellendus harum
+            veritatis itaque molestias repudiandae ea corporis maiores non
+            obcaecati libero, unde ipsum consequuntur aut consectetur culpa
+            magni omnis vero odio suscipit vitae dolor quod dignissimos
+            perferendis eos? Consequuntur!</div>
+          <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A sed
+            nobis ut exercitationem atque accusamus sit natus officiis totam
+            blanditiis at eum nemo, nulla et quae eius culpa eveniet
+            voluptatibus repellat illum tenetur, facilis porro. Quae fuga odio
+            perferendis itaque alias sint, beatae non maiores magnam ad, veniam
+            tenetur atque ea exercitationem earum eveniet totam ipsam magni
+            tempora aliquid ullam possimus? Tempora nobis facere porro,
+            praesentium magnam provident accusamus temporibus! Repellendus harum
+            veritatis itaque molestias repudiandae ea corporis maiores non
+            obcaecati libero, unde ipsum consequuntur aut consectetur culpa
+            magni omnis vero odio suscipit vitae dolor quod dignissimos
+            perferendis eos? Consequuntur!</div>
+        </div>
+      </div>
+
+
+

@@ -1,0 +1,68 @@
+{{!
+
+-If the user is not authenticaed and hits the endpoint 'GET /', you will render this view with a login form.
+-The form will contain two inputs, one for username and one for password.
+-The form will be used to submit a POST request to the '/login' route on the server and must have an 'id' of 'login-form'.
+-The input for the username must have a 'name' and 'id' of 'usernameInput'.
+-The input for the password must have 'name' and 'id' of 'passwordInput' and should be an input 'type' of 'password'.
+-You will also have a link on this page that links to '/register' and has the text "Click here to register!"
+
+Do not forget to use labels for your inputs! For the labels, you will use the method of using the 'for' attribute.
+You should have a label for both the username and password inputs referencing their id's in the for attribute of the label.
+
+}}
+
+<main>
+  <div class="info">
+    <br />
+    <h1> Welcome to Online Course Website Project &#127891;</h1>
+    <p>
+      <h1>
+        Online Course Website is a Learning platform. Where instructor can
+        create a new courses and students can register for the courses, and
+        students can take quizz exams on the course.</h1>
+    </p>
+
+  </div>
+  <br />
+
+  <h2 class="solid"> Login Page:</h2>
+
+  <p><h2>Enter username and password to know more about user.</h2></p>
+  <br />
+  <span style="color: red;"> {{error_msg}} </span>
+  <form id="login-form" autocomplete="off" method="post" action="/login">
+    <label for="usernameInput">Username </label>
+    &#128100;
+    <input
+      id="usernameInput"
+      type="text"
+      name="usernameInput"
+      placeholder="Username"
+    />
+
+    <br /><br />
+    <label for="password">Password </label>
+    <input
+      id="passwordInput"
+      type="password"
+      name="passwordInput"
+      placeholder="Password"
+    />
+    <br /><br />
+
+    <a href="/instructor">Click here for Instructor Login &#128072;</a><br />
+    <button class="button" id="login-button" type="submit">Login</button>
+
+  </form>
+
+  {{#if error}}
+    <h3>{{error}}</h3>
+  {{/if}}
+  <br /><br />
+  <a href="/register">Click here to User register &#128072;</a><br /><br />
+  <a href="/instructor/instructor_register">Click here to Intructor Register
+    &#128072;</a>
+  <br />
+
+</main>
