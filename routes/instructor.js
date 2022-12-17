@@ -3,23 +3,24 @@ const e = require("express");
 const express = require("express");
 const router = express.Router();
 const intructors = require("../data/instructor");
+const feedbacks = require("../data/feedback");
 
 router.route("/").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    userType: req.session.userType, res.redirect("/instructor/protected");
+    res.redirect("/instructor/instructor_protected");
   } else {
-    res.render("instructorLogin", { title: "instructor Login" });
+    res.render("instructor/instructorLogin", { title: "instructor Login" });
   }
 });
 
 //profile route
-router.route("/instructor/profile").get(async (req, res) => {
+router.route("/instructor_profile").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("user_profile", {
+    res.render("instructor/instructorUserProfile", {
       userType: req.session.userType,
-      title: "profile page",
+      title: "instructor profile page",
       date_time: date_time,
       fname: req.session.fname,
       lname: req.session.lname,
@@ -34,33 +35,36 @@ router.route("/instructor/profile").get(async (req, res) => {
       phonenumber: req.session.phonenumber,
     });
   } else {
-    res.render("instructorLogin", { title: "instructor Login" });
+    res.render("instructor/instructorLogin", { title: "instructor Login" });
   }
 });
 
-router.route("/instructor/IntructorHome").get(async (req, res) => {
+router.route("/IntructorHome").get(async (req, res) => {
   //code here for GET
 
   if (req.session.user) {
     // fname: req.session.fname,
-    userType: req.session.userType,
-      res.render("instructor_settings/instructorHome", {
-        title: "Home Page",
-        fname: req.session.fname,
-      });
+
+    res.render("instructor/instructorHome", {
+      userType: req.session.userType,
+      title: "Home Page",
+      fname: req.session.fname,
+    });
   } else {
-    res.render("instructorLogin", { title: "instructor Login" });
+    res.render("instructor/instructorLogin", { title: "instructor Login" });
   }
 });
 
 // route to my course
-router.route("/mycourse_list").get(async (req, res) => {
+router.route("/instructor_mycourse_list").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    userType: req.session.userType,
-      res.render("mycourse_list", { title: "My Course List Page" });
+    res.render("instructor/instructorCourseList", {
+      userType: req.session.userType,
+      title: "My Course List Page",
+    });
   } else {
-    res.render("instructorLogin", { title: "instructor Login" });
+    res.render("instructor/instructorLogin", { title: "instructor Login" });
   }
 });
 
@@ -68,54 +72,86 @@ router.route("/mycourse_list").get(async (req, res) => {
 router.route("/aboutpage").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    userType: req.session.userType,
-      res.render("aboutpage", { title: "About Page" });
+    res.render("instructor/aboutpage", {
+      userType: req.session.userType,
+      title: "About Page",
+    });
   } else {
-    res.render("instructorLogin", { title: "instructor Login" });
+    res.render("instructor/instructorLogin", { title: "instructor Login" });
   }
 });
 
 // route to my connect // social media
-// router.route("/social_media").get(async (req, res) => {
-//   //code here for GET
-//   if (req.session.user) {
-//     userType: req.session.userType,
-//       res.render("social_media", { title: "Social Media Page" });
-//   } else {
-//     res.render("instructorLogin", { title: "instructor Login" });
-//   }
-// });
-
-// route to my feedbackform
-router.route("/feedbackform").get(async (req, res) => {
+router.route("/social_media").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    userType: req.session.userType,
-      res.render("feedbackform", { title: "Feedback Form Page" });
+    res.render("instructor/social_media", { title: "Social Media Page" });
   } else {
-    res.render("instructor Login", { title: "instructorLogin" });
+    res.render("instructor/instructorLogin", { title: "instructor Login" });
   }
 });
 
 // route to my feedbackform
-router.route("/ask_question").get(async (req, res) => {
-  //code here for GET
-  if (req.session.user) {
-    userType: req.session.userType,
-      res.render("ask_question", { title: "Ask Question Page" });
-  } else {
-    res.render("instructorLogin", { title: "instructor Login" });
-  }
-});
+router
+  .route("/instructorFeedbackform")
+  .get(async (req, res) => {
+    //code here for GET
+    let name = req.session.fname + req.session.lname;
+    if (req.session.user) {
+      res.render("instructor/instructorFeedbackform", {
+        userType: req.session.userType,
+        title: "Feedback Form Page",
+        name,
+      });
+    } else {
+      res.render("instructor/instructorLogin", { title: "instructor Login" });
+    }
+  })
+  .post(async (req, res) => {
+    const id_data = req.session.idData;
+    //fname+lname
+    const full_name = req.body.fullnameInput;
+    //select country
+    const country_name = req.body.countryInput;
+    //message
+    const message_name = req.body.messageInput;
+
+    try {
+      //Create a User by sending u and p.
+      var registration_response = await feedbacks.sendFeedback(
+        id_data,
+        full_name,
+        country_name,
+        message_name
+      );
+
+      console.log("registration_response", registration_response);
+
+      if ("inserted_user" in registration_response) {
+        res.redirect("/");
+      } else {
+        res.status(500);
+        res.render("student/userRegister", {
+          title: "register",
+          error_msg: "Internal Server Error",
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
 router
-  .route("/instructor/register")
+  .route("/instructor_register")
   .get(async (req, res) => {
     //code here for GET
     if (req.session.user) {
-      userType: req.session.userType, res.redirect("/instructor/protected");
+      res.redirect("/instructor_protected");
     } else {
-      res.render("instructorRegister", { title: "register" });
+      res.render("instructor/instructorRegister", {
+        userType: req.session.userType,
+        title: "Instructor Register",
+      });
     }
   })
   .post(async (req, res) => {
@@ -185,23 +221,26 @@ router
       console.log("registration_response", registration_response);
 
       if ("inserted_user" in registration_response) {
-        userType: req.session.userType, res.redirect("/instructor");
+        res.redirect("/instructor/instructor_profile");
       } else if ("user_exists" in registration_response) {
         res.status(400);
-        res.render("userRegister", {
-          title: "register",
+        res.render("instructor/instructorRegister", {
+          userType: req.session.userType,
+          title: "instructor register",
           error_msg: " User Already Exist",
         });
       } else if ("validation_error" in registration_response) {
         res.status(400);
-        res.render("userRegister", {
-          title: "register",
+        res.render("instructor/instructorRegister", {
+          userType: req.session.userType,
+          title: "instructor register",
           error_msg: registration_response.validation_error,
         });
       } else {
         res.status(500);
-        res.render("userRegister", {
-          title: "register",
+        res.render("instructor/instructorRegister", {
+          userType: req.session.userType,
+          title: "instructor register",
           error_msg: "Internal Server Error",
         });
       }
@@ -260,7 +299,7 @@ router.route("/login").post(async (req, res) => {
         "my user logged in=",
         registration_response.data._id.toString()
       );
-      req.session.userType = "instructor";
+      //   req.session.userType = "instructor";
       req.session.idData = registration_response.data._id;
       // req.session.id = registration_response.data._id;
       req.session.fname = registration_response.data.firstnameData;
@@ -278,7 +317,8 @@ router.route("/login").post(async (req, res) => {
       res.redirect("/instructor");
     } else if ("validation_error" in registration_response) {
       res.status(400);
-      res.render("instructorLogin", {
+      res.render("instructor/instructorLogin", {
+        userType: req.session.userType,
         title: "instructor Login",
         error_msg: registration_response.validation_error,
       });
@@ -288,26 +328,28 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-router.route("/instructor/protected").get(async (req, res) => {
+router.route("/instructor_protected").get(async (req, res) => {
   //code here for GET
   date_time = Date();
+  let name = req.session.fname + req.session.lname;
   if (req.session.user) {
-    userType: req.session.userType,
-      res.render("instructor_settings/instructorHome", {
-        title: "Welcome",
-        date_time: date_time,
-        fname: req.session.fname,
-        lname: req.session.lname,
-        user: req.session.user,
-        email: req.session.email,
-        dob: req.session.dob,
-        gender: req.session.gender,
-        saddress: req.session.saddress,
-        city: req.session.city,
-        zipcode: req.session.zipcode,
-        country: req.session.country,
-        phonenumber: req.session.phonenumber,
-      });
+    res.render("instructor/instructor_private", {
+      name,
+      userType: req.session.userType,
+      title: "Welcome",
+      date_time: date_time,
+      fname: req.session.fname,
+      lname: req.session.lname,
+      user: req.session.user,
+      email: req.session.email,
+      dob: req.session.dob,
+      gender: req.session.gender,
+      saddress: req.session.saddress,
+      city: req.session.city,
+      zipcode: req.session.zipcode,
+      country: req.session.country,
+      phonenumber: req.session.phonenumber,
+    });
   } else {
     res.render("forbiddenAccess", { title: "Error" });
   }
@@ -324,12 +366,13 @@ router.route("/logout").get(async (req, res) => {
 });
 
 //edit user
-router.route("/editUser").get(async (req, res) => {
+router.route("/instructorEditUser").get(async (req, res) => {
   //code here for GET
   //
   if (req.session.user) {
-    res.render("editUser", {
-      title: "Edit user page",
+    res.render("instructor/instructorEditUser", {
+      userType: req.session.userType,
+      title: "Edit Instructor Page",
       date_time: date_time,
       fname: req.session.fname,
       lname: req.session.lname,
@@ -344,17 +387,17 @@ router.route("/editUser").get(async (req, res) => {
       phonenumber: req.session.phonenumber,
     });
   } else {
-    res.render("instructorLogin", { title: "instructor Login" });
+    res.render("instructor/instructorLogin", { title: "instructor Login" });
   }
 });
 
 //update user
-router.post("/updateUser", async (req, res) => {
+router.post("/updateInstructorUser", async (req, res) => {
   //code here for POST
   //get data and save to database
 
   const id_data = req.session.idData;
-  console.log("id passed is", id_data);
+  console.log("instructor id passed is", id_data);
   //fname+lname
   const fname_data = req.body.firstnameInput;
   const lname_data = req.body.lastnameInput;
@@ -399,12 +442,11 @@ router.post("/updateUser", async (req, res) => {
       postal_code_data,
       country_data
     );
-    console.log("registration_response", registration_response);
+    console.log("instructor registration_response", registration_response);
 
     if ("updatedInfo" in registration_response) {
       //create a session
-      userType: req.session.userType,
-        (req.session.idData = registration_response.data._id);
+      req.session.idData = registration_response.data._id;
       // req.session.id = registration_response.data._id;
       req.session.fname = registration_response.data.firstnameData;
       req.session.lname = registration_response.data.lastnameData;
@@ -418,15 +460,17 @@ router.post("/updateUser", async (req, res) => {
       req.session.country = registration_response.data.country;
       req.session.phonenumber = registration_response.data.phonenumberData;
       //req.session.user = user_data;
-      res.redirect("/instructor/profile");
+      console.log("now redirecting");
+      res.redirect("/instructor");
     } else if ("validation_error" in registration_response) {
       res.status(400);
-      res.render("editUser", {
-        title: "edit user",
+      res.render("instructor/instructorEditUser", {
+        userType: req.session.userType,
+        title: "instructor edit user",
         error_msg: registration_response.validation_error,
       });
     } else {
-      res.render("instructorLogin", { title: "instructor Login" });
+      res.render("instructor/instructorLogin", { title: "instructor Login" });
     }
   } catch (e) {
     console.log(e);

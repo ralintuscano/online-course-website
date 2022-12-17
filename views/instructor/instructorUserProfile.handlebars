@@ -1,19 +1,13 @@
 
-{{> page/head_nav}}
 
- {{> page/sidenavigation}}
-
-{{#if userType}}
-   {{> instructor_page/sidenavigation}}
-{{else}}
- {{> page/sidenavigation}}
-{{/if}}
+{{> instructor_page/head_nav}}
+ {{> instructor_page/sidenavigation}}
 
 
 
  <div class="main_content">
         <div class="header">Welcome!! Have a nice day.
-             <a href="/editUser">Edit User <i class="fa fa-pen"></i> </a>
+             <a href="/instructor/instructorEditUser">Instructor Edit User <i class="fa fa-pen"></i> </a>
         </div>
        
        <div class="info">
@@ -42,4 +36,4 @@
       
      
 
-{{> page/footer}}
+{{> instructor_page/footer}}

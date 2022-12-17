@@ -147,11 +147,12 @@ h1 {
 }
 
 h2 {
-  font-size: 1.75rem;
+  font-size: 2rem;
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  color: rgb(218, 0, 0);
 }
 
 h4 {
@@ -199,6 +200,7 @@ fieldset {
 #hrefid {
   background-color: #ffffff;
 }
+
 /* profile picture */
 
 /* button */

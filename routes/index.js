@@ -5,6 +5,7 @@ const instructorRoutes = require("./Instructor");
 
 const constructorMethod = (app) => {
   app.use("/", userRoutes);
+  app.use("/student", userRoutes);
   app.use("/instructor", instructorRoutes);
   app.use("*", (req, res) => {
     res.sendStatus(404);

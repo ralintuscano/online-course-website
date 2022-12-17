@@ -1,39 +1,28 @@
-{{> page/head_nav}}
- {{!-- {{> page/sidenavigation}} --}}
- {{#if userType}}
-   {{> instructor_page/sidenavigation}}
-{{else}}
- {{> page/sidenavigation}}
-{{/if}}
+{{> instructor_page/head_nav}}
+ {{> instructor_page/sidenavigation}}
 
 
- <div class="main_content">
-        <div class="header">Not connected to database,later part of development.</div>
+<div class="main_content">
+        <div class="header">Hello {{name}}, Plaease give us your valuable feedback.</div>
        
        <div class="info">
 
-<form>
+<form id="registartion-form"
+      autocomplete="on"
+      method="post"
+      action="/instructor/instructorFeedbackform">
   {{! first name }}
-  <label for="firstname">First Name* :</label>
+  <label for="firstname">Full Name* :</label>
   <input
     type="text"
-    id="firstnameInput"
-    name="firstnameInput"
+    id="fullnameInput"
+    name="fullnameInput"
     autocomplete="name"
     enterkeyhint="next"
+    value="{{name}}"
   />
    <br /> <br />
-  {{! last name }}
-  <label for="lastname">Last Name* :</label>
-  <input
-    type="text"
-    id="lastnameInput"
-    name="lastnameInput"
-    autocomplete="name"
-    enterkeyhint="next"
-  />
-  <br />
-   <br />
+{{!-- select country --}}
   <div>
     <label for="country">Country or region :</label>
     <select
@@ -295,20 +284,16 @@
     </select>
   </div>
   <br />
+{{!-- write a message --}}
+ <label for="message">Message:</label>
+ <p></p>
+  <textarea id="messageInput" name="messageInput" rows="4" cols="50" placeholder=" Write a Message."></textarea>
+  <br>
 
-  <label for="subject:">Subject</label>
-   <br />
-  <textarea
-    id="subject"
-    name="subject"
-    placeholder="Write something.."
-    style="height:200px"
-  ></textarea>
-
- <br /> <br />
+ <br />
   <input type="submit" value="Submit" />
 </form>
 </div>
       </div>
 
-{{> page/footer}}
+{{> instructor_page/footer}}

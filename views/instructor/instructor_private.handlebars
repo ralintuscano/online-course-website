@@ -1,0 +1,39 @@
+{{> instructor_page/head_nav}}
+ {{> instructor_page/sidenavigation}}
+
+
+ <div class="main_content">
+        <div class="header">Hello {{name}}, Now you can Create Courses for Students</div>
+       
+       <div class="info">
+
+<form>
+  {{! first name }}
+  <label for="coursename">Course Name* :</label>
+  <input
+    type="text"
+    id="coursenameInput"
+    name="coursenameInput"
+    autocomplete="coursename"
+    enterkeyhint="next"
+  />
+  <br/>
+  <label for="description">Course Description :</label>
+  <input
+    type="text"
+    id="descriptionInput"
+    name="descriptionInput"
+    autocomplete="description"
+    enterkeyhint="next"
+  />
+  <br/>
+
+  <label for="resourseUrl">Add your Url:</label>
+  <input type="url" id="resourseUrlInput" name="resourseUrlInput"><br><br>
+
+  <input type="submit" value="Create Course" />
+</form>
+</div>
+</div>
+
+{{> instructor_page/footer}}
