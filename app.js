@@ -14,6 +14,9 @@ app.use("/public", static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//session expire
+app.use(session({ secret: "Key", cookie: { maxAge: 600000 } }));
+
 app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 

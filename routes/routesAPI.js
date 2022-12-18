@@ -3,13 +3,15 @@ const e = require("express");
 const express = require("express");
 const router = express.Router();
 const userss = require("../data/users");
+const feedbacks = require("../data/feedback");
+const coursess = require("../data/courses");
 
 router.route("/").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
     res.redirect("/protected");
   } else {
-    res.render("userLogin", { title: "login" });
+    res.render("student/userLogin", { title: "User Login" });
   }
 });
 
@@ -17,32 +19,39 @@ router.route("/").get(async (req, res) => {
 router.route("/profile").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("user_profile", {
+    var userData = await userss.getUserByUsername(req.session.user);
+    date_time = Date();
+
+    res.render("student/user_profile", {
       title: "profile page",
       date_time: date_time,
-      fname: req.session.fname,
-      lname: req.session.lname,
-      user: req.session.user,
-      email: req.session.email,
-      dob: req.session.dob,
-      gender: req.session.gender,
-      saddress: req.session.saddress,
-      city: req.session.city,
-      zipcode: req.session.zipcode,
-      country: req.session.country,
-      phonenumber: req.session.phonenumber,
+      fname: userData.firstnameData,
+      lname: userData.lastnameData,
+      user: userData.usernameData,
+      email: userData.emailData,
+      dob: userData.dobData,
+      gender: userData.genderData,
+      saddress: userData.streetaddressData,
+      city: userData.cityData,
+      zipcode: userData.zipcodeData,
+      country: userData.country,
+      phonenumber: userData.phonenumberData,
     });
   } else {
-    res.render("userLogin", { title: "login" });
+    res.render("student/userLogin", { title: "User Login" });
   }
 });
 
 router.route("/home").get(async (req, res) => {
   //code here for GET
+  var userData = await userss.getUserByUsername(req.session.user);
   if (req.session.user) {
-    res.render("home", { title: "Home Page" });
+    res.render("student/home", {
+      title: "Home Page",
+      fname: userData.firstnameData,
+    });
   } else {
-    res.render("userLogin", { title: "login" });
+    res.render("student/userLogin", { title: "User Login" });
   }
 });
 
@@ -50,9 +59,41 @@ router.route("/home").get(async (req, res) => {
 router.route("/mycourse_list").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("mycourse_list", { title: "My Course List Page" });
+    var userData = await userss.getUserByUsername(req.session.user);
+    let courseList = await coursess.getAllCourses();
+
+    res.render("student/mycourse_list", {
+      fname: userData.firstnameData,
+      title: "My Course List Page",
+      courses: courseList,
+    });
   } else {
-    res.render("userLogin", { title: "login" });
+    res.render("userLogin", { title: "User Login" });
+  }
+});
+
+// route to contact Form
+router.route("/contact_form").get(async (req, res) => {
+  //code here for GET
+  // let courseList = await coursess.getAllCourses();
+  if (req.session.user) {
+    res.render("student/ajax_contact_form", {
+      title: "Contact Form",
+    });
+  } else {
+    res.render("student/userLogin", { title: "User Login" });
+  }
+});
+// route to contact Form
+router.route("/searchbars").get(async (req, res) => {
+  //code here for GET
+  // let courseList = await coursess.getAllCourses();
+  if (req.session.user) {
+    res.render("student/ajax_contact_form", {
+      title: "Contact Form",
+    });
+  } else {
+    res.render("student/userLogin", { title: "User Login" });
   }
 });
 
@@ -60,9 +101,9 @@ router.route("/mycourse_list").get(async (req, res) => {
 router.route("/aboutpage").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("aboutpage", { title: "About Page" });
+    res.render("student/aboutpage", { title: "About Page" });
   } else {
-    res.render("userLogin", { title: "login" });
+    res.render("student/userLogin", { title: "User Login" });
   }
 });
 
@@ -70,31 +111,69 @@ router.route("/aboutpage").get(async (req, res) => {
 router.route("/social_media").get(async (req, res) => {
   //code here for GET
   if (req.session.user) {
-    res.render("social_media", { title: "Social Media Page" });
+    res.render("student/social_media", { title: "Social Media Page" });
   } else {
-    res.render("userLogin", { title: "login" });
+    res.render("student/userLogin", { title: "User Login" });
   }
 });
-
 // route to my feedbackform
-router.route("/feedbackform").get(async (req, res) => {
-  //code here for GET
-  if (req.session.user) {
-    res.render("feedbackform", { title: "Feedback Form Page" });
-  } else {
-    res.render("userLogin", { title: "login" });
-  }
-});
+router
+  .route("/feedbackform")
+  .get(async (req, res) => {
+    //code here for GET
+    var userData = await userss.getUserByUsername(req.session.user);
+    let name = userData.firstnameData + userData.lastnameData;
+    if (req.session.user) {
+      res.render("student/feedbackform", {
+        name: name,
+        title: "feedback  Page",
+      });
+    } else {
+      res.render("student/userLogin", { title: "User Login" });
+    }
+  })
+  .post(async (req, res) => {
+    const id_data = req.session.idData;
+    //fname+lname
+    const full_name = req.body.fullnameInput;
+    //select country
+    const country_name = req.body.countryInput;
+    //message
+    const message_name = req.body.messageInput;
 
-// route to my feedbackform
-router.route("/ask_question").get(async (req, res) => {
-  //code here for GET
-  if (req.session.user) {
-    res.render("ask_question", { title: "Ask Question Page" });
-  } else {
-    res.render("userLogin", { title: "login" });
-  }
-});
+    try {
+      //Create a User by sending u and p.
+      var registration_response = await feedbacks.sendFeedback(
+        id_data,
+        full_name,
+        country_name,
+        message_name
+      );
+
+      console.log("registration_response", registration_response);
+
+      if ("inserted_user" in registration_response) {
+        res.redirect("/");
+      } else {
+        res.status(500);
+        res.render("student/userRegister", {
+          title: "register",
+          error_msg: "Internal Server Error",
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
+// route to my askqq
+// router.route("/ask_question").get(async (req, res) => {
+//   //code here for GET
+//   if (req.session.user) {
+//     res.render("student/ask_question", { title: "Ask Question Page" });
+//   } else {
+//     res.render("student/userLogin", { title: "User Login" });
+//   }
+// });
 
 router
   .route("/register")
@@ -103,7 +182,7 @@ router
     if (req.session.user) {
       res.redirect("/protected");
     } else {
-      res.render("userRegister", { title: "register" });
+      res.render("student/userRegister", { title: "register" });
     }
   })
   .post(async (req, res) => {
@@ -175,19 +254,19 @@ router
         res.redirect("/");
       } else if ("user_exists" in registration_response) {
         res.status(400);
-        res.render("userRegister", {
+        res.render("student/userRegister", {
           title: "register",
           error_msg: " User Already Exist",
         });
       } else if ("validation_error" in registration_response) {
         res.status(400);
-        res.render("userRegister", {
+        res.render("student/userRegister", {
           title: "register",
           error_msg: registration_response.validation_error,
         });
       } else {
         res.status(500);
-        res.render("userRegister", {
+        res.render("student/userRegister", {
           title: "register",
           error_msg: "Internal Server Error",
         });
@@ -243,23 +322,20 @@ router.route("/login").post(async (req, res) => {
 
     if ("authenticatedUser" in registration_response) {
       //create a session
-      req.session.fname = registration_response.data.firstnameData;
-      req.session.lname = registration_response.data.lastnameData;
+      console.log(
+        "my user logged in=",
+        registration_response.data._id.toString()
+      );
+      req.session.idData = registration_response.data._id;
       req.session.user = registration_response.data.usernameData;
-      req.session.email = registration_response.data.emailData;
-      req.session.dob = registration_response.data.dobData;
-      req.session.gender = registration_response.data.genderData;
-      req.session.saddress = registration_response.data.streetaddressData;
-      req.session.city = registration_response.data.cityData;
-      req.session.zipcode = registration_response.data.zipcodeData;
-      req.session.country = registration_response.data.country;
-      req.session.phonenumber = registration_response.data.phonenumberData;
+
       //req.session.user = user_data;
+      console.log("courseList-registration_response", registration_response);
       res.redirect("/");
     } else if ("validation_error" in registration_response) {
       res.status(400);
-      res.render("userLogin", {
-        title: "login",
+      res.render("student/userLogin", {
+        title: "User Login",
         error_msg: registration_response.validation_error,
       });
     }
@@ -270,25 +346,33 @@ router.route("/login").post(async (req, res) => {
 
 router.route("/protected").get(async (req, res) => {
   //code here for GET
+  if (!req.session.user) {
+    res.redirect("/");
+  }
+
+  // if (req.session.userType) {
+  //   res.redirect("/");
+  // }
+
   date_time = Date();
+  let userData = await userss.getAllUsers();
+  var userDataFresh = await userss.getUserByUsername(req.session.user);
+  var coursesIdList = userDataFresh.enrolledCourse;
+  var courses = [];
+  if (coursesIdList != null) {
+    console.log("enrolled course ID list", coursesIdList);
+    courses = await coursess.getCoursesByIdList(coursesIdList);
+  }
+
+  console.log("enrolled courses", courses);
   if (req.session.user) {
-    res.render("private", {
+    res.render("student/student_private", {
       title: "Welcome",
-      date_time: date_time,
-      fname: req.session.fname,
-      lname: req.session.lname,
-      user: req.session.user,
-      email: req.session.email,
-      dob: req.session.dob,
-      gender: req.session.gender,
-      saddress: req.session.saddress,
-      city: req.session.city,
-      zipcode: req.session.zipcode,
-      country: req.session.country,
-      phonenumber: req.session.phonenumber,
+      userInfo: userData,
+      enrolled: courses,
+
+      // courses: courseList,
     });
-  } else {
-    res.render("forbiddenAccess", { title: "Error" });
   }
   //check if user is logged in
   //if yes -
@@ -301,4 +385,183 @@ router.route("/logout").get(async (req, res) => {
   req.session.destroy();
   res.render("logout", { title: "Logout" });
 });
+
+//edit user
+router.route("/editUser").get(async (req, res) => {
+  //code here for GET
+  if (!req.session.user) {
+    res.redirect("/");
+  }
+
+  var userData = await userss.getUserByUsername(req.session.user);
+  date_time = Date();
+  if (req.session.user) {
+    res.render("student/editUser", {
+      title: "Edit user page",
+      date_time: date_time,
+      fname: userData.firstnameData,
+      lname: userData.lastnameData,
+      user: userData.usernameData,
+      email: userData.emailData,
+      dob: userData.dobData,
+      gender: userData.genderData,
+      saddress: userData.streetaddressData,
+      city: userData.cityData,
+      zipcode: userData.zipcodeData,
+      country: userData.country,
+      phonenumber: userData.phonenumberData,
+    });
+  } else {
+    res.render("student/userLogin", { title: "User Login" });
+  }
+});
+
+//update user
+router.post("/updateUser", async (req, res) => {
+  //code here for POST
+  //get data and save to database
+
+  const id_data = req.session.idData;
+  console.log("id passed is", id_data);
+  //fname+lname
+  const fname_data = req.body.firstnameInput;
+  const lname_data = req.body.lastnameInput;
+
+  //username
+  const user_data = req.body.userInput;
+
+  //email
+  const email_data = req.body.emailInput;
+
+  //dob
+  const dob_data = req.body.dobInput;
+
+  //gender
+  const gender_data = req.body.genderInput;
+
+  //address
+  const street_address_data = req.body.addressInput;
+  const city_data = req.body.cityInput;
+  const postal_code_data = req.body.zipcodeInput;
+  const country_data = req.body.countryInput;
+
+  //phone
+  const phone_data = req.body.phonenumberInput;
+
+  //password
+  const password_data = req.body.passwordInput;
+  // res.render("userRegister", { user: data });
+
+  //printing user data
+
+  try {
+    //Create a User by sending u and p.
+    var registration_response = await userss.updateRecord(
+      id_data,
+      fname_data,
+      lname_data,
+      dob_data,
+      gender_data,
+      street_address_data,
+      city_data,
+      postal_code_data,
+      country_data
+    );
+    console.log("registration_response", registration_response);
+
+    if ("updatedInfo" in registration_response) {
+      //create a session
+
+      res.redirect("/profile");
+    } else if ("validation_error" in registration_response) {
+      res.status(400);
+      res.render("student/editUser", {
+        title: "edit user",
+        error_msg: registration_response.validation_error,
+      });
+    } else {
+      res.render("student/userLogin", { title: "User Login" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+// route to enroll course
+//update user
+router.post("/enroll_course", async (req, res) => {
+  //code here for POST
+  //get data and save to database
+
+  // req.session.endrolled = registration_response.data.enrolledCourse;
+
+  const id_data = req.session.idData;
+  // console.log("id passed is", id_data);
+  //fname+lname
+  const enrollId = req.body.enrollInputId;
+  console.log("id-data", id_data);
+  console.log("enrollId", enrollId);
+  //
+  var registration_response = await userss.updateEnrolledId(id_data, enrollId);
+
+  res.redirect("/protected");
+});
+
+// //read  all courses
+// router.route("/readCourse").get(async (req, res) => {
+//   //code here for GET
+
+//   date_time = Date();
+//   let userData = await userss.getAllUsers();
+//   var userDataFresh = await userss.getUserByUsername(req.session.user);
+//   var coursesIdList = userDataFresh.enrolledCourse;
+//   var courses = [];
+//   if (coursesIdList != null) {
+//     console.log("enrolled course ID list", coursesIdList);
+//     courses = await coursess.getCoursesByIdList(coursesIdList);
+//   }
+//   if (req.session.user) {
+//     res.render("student/readCoursePage", {
+//       title: "Read Course",
+//       userInfo: userData,
+//       enrolled: courses,
+
+//       // courses: courseList,
+//     });
+//   } else {
+//     res.render("forbiddenAccess", { title: "Error" });
+//   }
+// });
+
+//read courses by id
+router.route("/readCourse/:id").get(async (req, res) => {
+  //code here for GET
+
+  if (req.session.user) {
+    id = req.params.id;
+
+    console.log("id-id", id);
+    date_time = Date();
+    let userData = await userss.getAllUsers();
+    var userDataFresh = await userss.getUserByUsername(req.session.user);
+    // var coursesIdList = userDataFresh.enrolledCourse;
+    var courses = [];
+    // if (coursesIdList != null) {
+    // console.log("enrolled course ID list", coursesIdList);
+    courses = await coursess.getCourseById(id);
+    // }
+    console.log("course gotten", courses);
+
+    res.render("student/readCoursePage", {
+      title: "Read Course",
+      userInfo: userData,
+      enrolled: courses,
+
+      // courses: courseList,
+    });
+  } else {
+    res.render("forbiddenAccess", { title: "Error" });
+  }
+});
+
 module.exports = router;

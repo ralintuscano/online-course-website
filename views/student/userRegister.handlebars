@@ -19,61 +19,50 @@ You will also have a link on this page that links to '/' and has the text "Alrea
   <span style="color: red;"> {{error_msg}} </span>
 
   <div class="inputFieldsId" id="inputFieldsId">
-
     <form
       id="registartion-form"
-      autocomplete="off"
+      autocomplete="on"
       method="post"
       action="/register"
     >
-<table id="tableInput"> <tr> <td>
-
-      {{! profile picture }}
-
-      {{!-- <input
-        id="image_input"
-        type="file"
-        name="profile_photo"
-        placeholder="Photo"
-        accept="image/png, image/jpg,image/jpeg" onclick="clickImage()"
-      />
-      <div id="display_image">
-        <image id="profileImage" src="http://lorempixel.com/100/100" />
-      </div>  --}}
-
-      
       <br />
-
       {{!-- first name --}}
+       <div>
         <label for="firstname">First Name* :</label>
         <input  type="text" id="firstnameInput" name="firstnameInput" autocomplete="name" enterkeyhint="next">
 {{!-- last name --}}
         <label for="lastname">Last Name* :</label>
         <input  type="text" id="lastnameInput" name="lastnameInput" autocomplete="name" enterkeyhint="next">
+</div>
+<br />
 
-<br /><br />
       {{! enter username }}
+     <div>
       <label for="username">Enter Username* :</label>
       <input
         id="usernameInput"
         type="text"
         name="usernameInput"
         placeholder=""
-      />
-      <br /><br />
+      /></div>
+      <br />
 
       {{! enter mail id }}
+      <div>
       <label for="email">Enter your email* :</label>
       <input type="email" id="emailInput" name="emailInput"  placeholder="" />
-
-      <br /><br />
+</div>
+      <br />
 
       {{! enter dob }}
-      <label for="birthday">Birthday:</label>
+      <div>      <label for="birthday">Birthday:</label>
       <input type="date" id="birthdayInput" name="birthdayInput" />
-      <br /><br />
+      </div>
+<br />
+
 
       {{! choose gender }}
+          <div>
        <legend>Choose your gender:
       <select name="genderInput" id="genderInput">
       <option value="Male">Male</option>
@@ -81,30 +70,14 @@ You will also have a link on this page that links to '/' and has the text "Alrea
 
     </select>
     </legend>
-
-      {{!-- <fieldset data-role="controlgroup">
-        <legend>Choose your gender:</legend>
-        <label for="male">Male</label>
-        <input
-          type="radio"
-          name="maleInput"
-          id="maleInput"
-          value="male" checked
-        />
-        <label for="female">Female</label>
-        <input
-          type="radio"
-          name="femaleInput"
-          id="femaleInput"
-          value="female"
-        />
-      </fieldset> --}}
-
+</div>
       <br />
 
     {{!-- address fields --}}
      {{> page/address}}
+      
       {{! contact }}
+<div>
       <label for="phone">Enter a phone number:</label>
       <input
         type="text"
@@ -113,32 +86,26 @@ You will also have a link on this page that links to '/' and has the text "Alrea
         placeholder="123-45-678"
         
         
-      /><br /><br />
+      /></div><br />
       {{! password }}
+<div>
       <label for="password">Create Password* :</label>
       <input
         id="passwordInput"
         type="password"
         name="passwordInput"
         placeholder="Password"
-      />
+      /></div>
+         <br />
 
-     
+    <br />
+  
+  <a href="/instructor/instructor_register">Click here for Intructor Register Page &#128072;</a><br /><br />
 
-         <br /><br />
+      <div>
+      <input id="submit-button"  type="submit" value="Submit" class="mysubmit" />
+      </div><br/>
 
-    <select name="personInput" id="personInput">
-      <option value="Student">Student</option>
-      <option value="Instructor">Instructor</option>
-
-    </select>
-    <br /><br />
-
-
-      <input id="submit-button" type="submit" value="Submit" />
-</td> </tr> 
-
-      </table> 
     </form>
 
   </div>
@@ -151,6 +118,7 @@ You will also have a link on this page that links to '/' and has the text "Alrea
 
 </main>
 
+<a href="/" id="hrefid"> <br />Already have an account? Click here to log-in  &#128072;</a><br />
 
-<a href="/" id="hrefid"> <br />Already have an account? Click here to log-in  <br /><br /></a>
+<a href="/instructor/" id="hrefid"> <br />Already have an account? Click here to Instructor Login &#128072;</a> <br /><br />
 

@@ -1,9 +1,8 @@
 const mongoCollections = require("../config/mongoCollections");
-const users = mongoCollections.users;
+const instructor = mongoCollections.instructor;
 const { ObjectId } = require("mongodb");
 var bcrypt = require("bcryptjs");
 var salt = bcrypt.genSaltSync(10);
-const coursess = require("../data/courses");
 
 //email validation
 // function ValidateEmail(mail) {
@@ -156,7 +155,7 @@ const createUser = async (
     };
     console.log("new_user", new_user);
 
-    const userCollection = await users();
+    const userCollection = await instructor();
     const insertInfo = await userCollection.insertOne(new_user);
     if (!insertInfo.insertedId) throw "Could not add user";
 
@@ -236,7 +235,7 @@ const checkPhone = async (phone) => {
 
 //email adrees check from db
 const getUserByEmail = async (email) => {
-  const userCollection = await users();
+  const userCollection = await instructor();
   const userEmail = await userCollection.findOne({ emailData: email });
   console.log("getUserByEmail", userEmail);
 
@@ -245,7 +244,7 @@ const getUserByEmail = async (email) => {
 
 //phonenumber  check from db
 const getUserByPhone = async (phone) => {
-  const userCollection = await users();
+  const userCollection = await instructor();
   const userPhone = await userCollection.findOne({ phonenumberData: phone });
   console.log("getUserByPhone", userPhone);
 
@@ -254,7 +253,7 @@ const getUserByPhone = async (phone) => {
 
 const getUserByUsername = async (username) => {
   console.log("searching for " + username);
-  const userCollection = await users();
+  const userCollection = await instructor();
   const user = await userCollection.findOne({ usernameData: username });
   console.log("getUserByUsername", user);
 
@@ -262,7 +261,7 @@ const getUserByUsername = async (username) => {
 };
 
 const getUserById = async (id) => {
-  const userCollection = await users();
+  const userCollection = await instructor();
   const userr_id = await userCollection.findOne({ _id: ObjectId(id) });
   return userr_id;
 };
@@ -309,7 +308,7 @@ const updateRecord = async (
   // console.log("_id", _id);
   console.log("id", id);
 
-  const userCollection = await users();
+  const userCollection = await instructor();
 
   // { _id: ObjectId(id) },
   // { _id: id },
@@ -330,60 +329,6 @@ const updateRecord = async (
   return { updatedInfo: true, data: userCheck };
 
   // return { error: true };
-
-  // updateEnrolledId
 };
 
-const updateEnrolledId = async (user_id, enroll_id) => {
-  let enrolledCourse = [];
-
-  // console.log("enrolledCourse", enrolledCourse);
-
-  // console.log("_id", _id);
-  console.log("user_id", user_id);
-
-  // let courseList = await coursess.getCourseById(enroll_id);
-
-  const userCollection = await users();
-
-  const updatedInfo = await userCollection.updateOne(
-    { _id: ObjectId(user_id) },
-    { $push: { enrolledCourse: enroll_id } }
-  );
-
-  if (updatedInfo.modifiedCount === 0) {
-    // throw "could not update user successfully";
-    return {
-      validation_error: "failed to enroll the course ",
-    };
-  }
-
-  var userCheck = await getUserById(user_id);
-  //login success
-  return { updatedInfo: true, data: userCheck };
-
-  // return { error: true };
-
-  // updateEnrolledId
-};
-
-//get all user data
-const getAllUsers = async () => {
-  const userCollection = await users();
-  const userList = await userCollection.find({}).toArray();
-  if (!userList) throw "No users in system!";
-
-  //var userCheck = await getUserByUsername();
-
-  // return { courseCollection: true, data: courseList };
-  return userList;
-};
-
-module.exports = {
-  createUser,
-  checkUser,
-  updateRecord,
-  updateEnrolledId,
-  getAllUsers,
-  getUserByUsername,
-};
+module.exports = { createUser, checkUser, updateRecord };
