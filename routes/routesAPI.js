@@ -8,7 +8,9 @@ const coursess = require("../data/courses");
 
 router.route("/").get(async (req, res) => {
   //code here for GET
-  if (req.session.user) {
+  if (req.session.user != null && req.session.type == "instructor") {
+    res.redirect("/instructor/");
+  } else if (req.session.user != null && req.session.type == "student") {
     res.redirect("/protected");
   } else {
     res.render("student/userLogin", { title: "User Login" });
@@ -260,6 +262,7 @@ router
         phone_data,
         password_data
       );
+
       console.log("registration_response", registration_response);
 
       if ("inserted_user" in registration_response) {
@@ -340,7 +343,7 @@ router.route("/login").post(async (req, res) => {
       );
       req.session.idData = registration_response.data._id;
       req.session.user = registration_response.data.usernameData;
-
+      req.session.type = "student";
       //req.session.user = user_data;
       console.log("courseList-registration_response", registration_response);
       res.redirect("/");
@@ -368,8 +371,15 @@ router.route("/protected").get(async (req, res) => {
 
   date_time = Date();
   let userData = await userss.getAllUsers();
+
   var userDataFresh = await userss.getUserByUsername(req.session.user);
   var coursesIdList = userDataFresh?.enrolledCourse;
+  if (userDataFresh == null) {
+    res.redirect("/");
+  } else {
+    var coursesIdList = userDataFresh.enrolledCourse;
+  }
+
   var courses = [];
   if (coursesIdList != null) {
     console.log("enrolled course ID list", coursesIdList);
@@ -606,7 +616,6 @@ router.route("/readCourse/:id").get(async (req, res) => {
     date_time = Date();
     let userData = await userss.getAllUsers();
     var userDataFresh = await userss.getUserByUsername(req.session.user);
-    // var coursesIdList = userDataFresh.enrolledCourse;
     var courses = [];
     // if (coursesIdList != null) {
     // console.log("enrolled course ID list", coursesIdList);

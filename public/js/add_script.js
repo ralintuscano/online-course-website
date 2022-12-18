@@ -10,7 +10,7 @@ add_more_fields.onclick = function () {
   newField.setAttribute("id", "courseInput");
   newField.setAttribute("class", "courseInputFields");
   newField.setAttribute("size", 100);
-  newField.setAttribute("placeholder", "Add Resourses title");
+  newField.setAttribute("placeholder", "Add Resourses link");
 
   // var newField2 = document.createElement("input");
   // newField2.setAttribute("type", "text");
