@@ -39,10 +39,10 @@ const sendFeedback = async (feedBackId, fullname, country, message) => {
 
   const inserted_user = await getUserById(insertInfo.insertedId);
   console.log("inserted_user", inserted_user);
-  return {
-    validation_error: "Thank you for your valuable feedback",
-  };
-  return { inserted_user: true };
+  // return {
+  //   validation_error: "Thank you for your valuable feedback",
+  // };
+  return { inserted_feedback: true };
 
   //   return { user_exists: true };
 
