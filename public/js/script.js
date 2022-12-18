@@ -1,4 +1,10 @@
-const quizData = [
+// const quiz1 = require('../../data')
+import { getQuiz } from '../../data/quizQuestions'
+// const quizQuestions = quiz1.quizQuestions
+let questions = getQuiz("CS 5461")
+let quizData = questions.quizQuestions
+
+const quizData1 = [
     {
         question: "You're 4th place right now in a race. What place will you be in when you pass the person in 3rd place?",
         a: "1st",

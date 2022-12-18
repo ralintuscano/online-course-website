@@ -31,3 +31,8 @@ function checkQuestion(question) {
 
     return question
 }
+
+module.exports = {
+    checkOption: checkOption,
+    checkQuestion: checkQuestion
+}

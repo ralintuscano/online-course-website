@@ -26,6 +26,7 @@ async function addQuestion(
     const quizQuestionsCollection = await quizQuestions()
 
     let questionObj = {
+        question: question,
         a: a,
         b: b,
         c: c,
