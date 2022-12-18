@@ -61,6 +61,17 @@ router.route("/mycourse_list").get(async (req, res) => {
   if (req.session.user) {
     var userData = await userss.getUserByUsername(req.session.user);
     let courseList = await coursess.getAllCourses();
+    console.log("courseList-1", courseList);
+
+    courseList = courseList.map((course) => {
+      return {
+        ...course,
+        already_enrolled: userData?.enrolledCourse?.includes(course?._id?.toString().replace(/ObjectId\("(.*)"\)/, "$1")),
+      };
+    });
+     //code here for GET
+
+    console.log("courseList-2", courseList);
 
     res.render("student/mycourse_list", {
       fname: userData.firstnameData,
@@ -68,7 +79,8 @@ router.route("/mycourse_list").get(async (req, res) => {
       courses: courseList,
     });
   } else {
-    res.render("userLogin", { title: "User Login" });
+    // res.render("userLogin", { title: "User Login" });
+    res.redirect("/");
   }
 });
 
@@ -540,15 +552,21 @@ router.post("/enroll_course", async (req, res) => {
   // req.session.endrolled = registration_response.data.enrolledCourse;
 
   const id_data = req.session.idData;
-  // console.log("id passed is", id_data);
-  //fname+lname
   const enrollId = req.body.enrollInputId;
-  console.log("id-data", id_data);
-  console.log("enrollId", enrollId);
+
+  var userDataFresh = await userss.getUserByUsername(req.session.user);
+  var coursesIdList = userDataFresh?.enrolledCourse;
+
+  if(coursesIdList.includes(enrollId)){
+    res.redirect(`/readCourse/${enrollId}`);
+  }else{
+
   //
   var registration_response = await userss.updateEnrolledId(id_data, enrollId);
 
   res.redirect("/protected");
+  }
+
 });
 
 // //read  all courses
