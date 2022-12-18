@@ -8,7 +8,9 @@ const coursess = require("../data/courses");
 
 router.route("/").get(async (req, res) => {
   //code here for GET
-  if (req.session.user) {
+  if (req.session.user != null && req.session.type == "instructor") {
+    res.redirect("/instructor/");
+  } else if (req.session.user != null && req.session.type == "student") {
     res.redirect("/protected");
   } else {
     res.render("student/userLogin", { title: "User Login" });
@@ -55,22 +57,22 @@ router.route("/home").get(async (req, res) => {
   }
 });
 
-// route to my course
-router.route("/mycourse_list").get(async (req, res) => {
-  //code here for GET
-  if (req.session.user) {
-    var userData = await userss.getUserByUsername(req.session.user);
-    let courseList = await coursess.getAllCourses();
+// // route to my course
+// router.route("/mycourse_list").get(async (req, res) => {
+//   //code here for GET
+//   if (req.session.user) {
+//     var userData = await userss.getUserByUsername(req.session.user);
+//     let courseList = await coursess.getAllCourses();
 
-    res.render("student/mycourse_list", {
-      fname: userData.firstnameData,
-      title: "My Course List Page",
-      courses: courseList,
-    });
-  } else {
-    res.render("userLogin", { title: "User Login" });
-  }
-});
+//     res.render("student/mycourse_list", {
+//       fname: userData.firstnameData,
+//       title: "My Course List Page",
+//       courses: courseList,
+//     });
+//   } else {
+//     res.render("userLogin", { title: "User Login" });
+//   }
+// });
 
 // route to contact Form
 router.route("/contact_form").get(async (req, res) => {
@@ -248,6 +250,7 @@ router
         phone_data,
         password_data
       );
+
       console.log("registration_response", registration_response);
 
       if ("inserted_user" in registration_response) {
@@ -328,7 +331,7 @@ router.route("/login").post(async (req, res) => {
       );
       req.session.idData = registration_response.data._id;
       req.session.user = registration_response.data.usernameData;
-
+      req.session.type = "student";
       //req.session.user = user_data;
       console.log("courseList-registration_response", registration_response);
       res.redirect("/");
@@ -356,8 +359,14 @@ router.route("/protected").get(async (req, res) => {
 
   date_time = Date();
   let userData = await userss.getAllUsers();
+
   var userDataFresh = await userss.getUserByUsername(req.session.user);
-  var coursesIdList = userDataFresh.enrolledCourse;
+  if (userDataFresh == null) {
+    res.redirect("/");
+  } else {
+    var coursesIdList = userDataFresh.enrolledCourse;
+  }
+
   var courses = [];
   if (coursesIdList != null) {
     console.log("enrolled course ID list", coursesIdList);
@@ -544,7 +553,6 @@ router.route("/readCourse/:id").get(async (req, res) => {
     date_time = Date();
     let userData = await userss.getAllUsers();
     var userDataFresh = await userss.getUserByUsername(req.session.user);
-    // var coursesIdList = userDataFresh.enrolledCourse;
     var courses = [];
     // if (coursesIdList != null) {
     // console.log("enrolled course ID list", coursesIdList);
