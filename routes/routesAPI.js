@@ -367,8 +367,9 @@ router.route("/protected").get(async (req, res) => {
   console.log("enrolled courses", courses);
   if (req.session.user) {
     res.render("student/student_private", {
-      title: "Welcome",
+      title: `${req.session.user}'s Enrolled Courses.`,
       userInfo: userData,
+      fname: req.session?.user,
       enrolled: courses,
 
       // courses: courseList,
@@ -377,6 +378,49 @@ router.route("/protected").get(async (req, res) => {
   //check if user is logged in
   //if yes -
   // if no
+}).post(async (req, res) => {
+  if (!req.session.user) {
+    res.redirect("/");
+  }
+  
+  const search_term = req.body.search_course;
+  let error_msg=" ";
+
+  if(search_term=="" || search_term.trim()==""){
+    error_msg="Please enter a search term";
+  }
+
+  console.log("search_term", search_term);
+
+  let userData = await userss.getAllUsers();
+  var userDataFresh = await userss.getUserByUsername(req.session.user);
+  var coursesIdList = userDataFresh?.enrolledCourse;
+  var courses = [];
+  if (coursesIdList != null) {
+    console.log("enrolled course ID list", coursesIdList);
+    courses = await coursess.getCoursesByIdList(coursesIdList);
+  }
+
+  console.log("enrolled courses", courses,req.session.user );
+
+  courses = courses.filter((course) => {
+      return course?.courseTitle?.toLowerCase().includes(search_term?.toLowerCase());
+    } );
+
+
+  if (req.session.user) {
+    res.render("student/student_private", {
+      title: `Search results for ${search_term}`,
+      userInfo: req.session.user,
+      fname: req.session.user,
+      enrolled: courses,
+      error_msg: error_msg
+
+      // courses: courseList,
+    });
+  }
+
+
 });
 
 router.route("/logout").get(async (req, res) => {
