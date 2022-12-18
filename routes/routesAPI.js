@@ -357,7 +357,7 @@ router.route("/protected").get(async (req, res) => {
   date_time = Date();
   let userData = await userss.getAllUsers();
   var userDataFresh = await userss.getUserByUsername(req.session.user);
-  var coursesIdList = userDataFresh.enrolledCourse;
+  var coursesIdList = userDataFresh?.enrolledCourse;
   var courses = [];
   if (coursesIdList != null) {
     console.log("enrolled course ID list", coursesIdList);
