@@ -5,8 +5,8 @@ const router = express.Router();
 const userss = require("../data/users");
 const feedbacks = require("../data/feedback");
 const coursess = require("../data/courses");
-var {O} = require('mongodb');
-
+var { O } = require("mongodb");
+const quizzs = require("../data/quizQuestions");
 
 router.route("/").get(async (req, res) => {
   //code here for GET
@@ -70,10 +70,12 @@ router.route("/mycourse_list").get(async (req, res) => {
     courseList = courseList.map((course) => {
       return {
         ...course,
-        already_enrolled: userData?.enrolledCourse?.includes(course?._id?.toString().replace(/ObjectId\("(.*)"\)/, "$1")),
+        already_enrolled: userData?.enrolledCourse?.includes(
+          course?._id?.toString().replace(/ObjectId\("(.*)"\)/, "$1")
+        ),
       };
     });
-     //code here for GET
+    //code here for GET
 
     console.log("courseList-2", courseList);
 
@@ -157,8 +159,6 @@ router
     //message
     const message_name = req.body.messageInput;
 
-    
-
     try {
       //Create a User by sending u and p.
       var registration_response = await feedbacks.sendFeedback(
@@ -179,7 +179,11 @@ router
         // });
         res.json({ message: "Feedback Sent Successfully", success: true });
       } else {
-        res.json({ error_msg:registration_response.validation_error || "Error in sending feedback" });
+        res.json({
+          error_msg:
+            registration_response.validation_error ||
+            "Error in sending feedback",
+        });
 
         /**res.render("student/feedbackform", {
           title: "register",
@@ -370,95 +374,97 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-router.route("/protected").get(async (req, res) => {
-  //code here for GET
-  if (!req.session.user) {
-    res.redirect("/");
-  }
+router
+  .route("/protected")
+  .get(async (req, res) => {
+    //code here for GET
+    if (!req.session.user) {
+      res.redirect("/");
+    }
 
-  // if (req.session.userType) {
-  //   res.redirect("/");
-  // }
+    // if (req.session.userType) {
+    //   res.redirect("/");
+    // }
 
-  date_time = Date();
-  let userData = await userss.getAllUsers();
+    date_time = Date();
+    let userData = await userss.getAllUsers();
 
-  var userDataFresh = await userss.getUserByUsername(req.session.user);
-  var coursesIdList = userDataFresh?.enrolledCourse;
-  if (userDataFresh == null) {
-    res.redirect("/");
-  } else {
-    var coursesIdList = userDataFresh.enrolledCourse;
-  }
+    var userDataFresh = await userss.getUserByUsername(req.session.user);
+    var coursesIdList = userDataFresh?.enrolledCourse;
+    if (userDataFresh == null) {
+      res.redirect("/");
+    } else {
+      var coursesIdList = userDataFresh.enrolledCourse;
+    }
 
-  var courses = [];
-  if (coursesIdList != null) {
-    console.log("enrolled course ID list", coursesIdList);
-    courses = await coursess.getCoursesByIdList(coursesIdList);
-  }
+    var courses = [];
+    if (coursesIdList != null) {
+      console.log("enrolled course ID list", coursesIdList);
+      courses = await coursess.getCoursesByIdList(coursesIdList);
+    }
 
-  console.log("enrolled courses", courses);
-  if (req.session.user) {
-    res.render("student/student_private", {
-      title: `${req.session.user}'s Enrolled Courses.`,
-      userInfo: userData,
-      fname: req.session?.user,
-      enrolled: courses,
+    console.log("enrolled courses", courses);
+    if (req.session.user) {
+      res.render("student/student_private", {
+        title: `${req.session.user}'s Enrolled Courses.`,
+        userInfo: userData,
+        fname: req.session?.user,
+        enrolled: courses,
 
-      // courses: courseList,
+        // courses: courseList,
+      });
+    }
+    //check if user is logged in
+    //if yes -
+    // if no
+  })
+  .post(async (req, res) => {
+    if (!req.session.user) {
+      res.redirect("/");
+    }
+
+    const search_term = req.body.search_course;
+    let error_msg = " ";
+
+    if (search_term == "" || search_term.trim() == "") {
+      error_msg = "Please enter a search term";
+    }
+
+    if (search_term.length > 25) {
+      error_msg = "Search term should be less than 25 characters";
+    }
+
+    console.log("search_term", search_term);
+
+    let userData = await userss.getAllUsers();
+    var userDataFresh = await userss.getUserByUsername(req.session.user);
+    var coursesIdList = userDataFresh?.enrolledCourse;
+    var courses = [];
+    if (coursesIdList != null) {
+      console.log("enrolled course ID list", coursesIdList);
+      courses = await coursess.getCoursesByIdList(coursesIdList);
+    }
+
+    console.log("enrolled courses", courses, req.session.user);
+
+    courses = courses.filter((course) => {
+      return course?.courseTitle
+        ?.toLowerCase()
+        .includes(search_term?.toLowerCase());
     });
-  }
-  //check if user is logged in
-  //if yes -
-  // if no
-}).post(async (req, res) => {
-  if (!req.session.user) {
-    res.redirect("/");
-  }
-  
-  const search_term = req.body.search_course;
-  let error_msg=" ";
 
-  if(search_term=="" || search_term.trim()==""){
-    error_msg="Please enter a search term";
-  }
+    if (req.session.user) {
+      res.render("student/student_private", {
+        title: `Search results for ${search_term}`,
+        userInfo: req.session.user,
+        fname: req.session.user,
+        enrolled: courses,
+        error_msg: error_msg,
 
-  if(search_term.length>25){
-    error_msg="Search term should be less than 25 characters";
-  }
-
-  console.log("search_term", search_term);
-
-  let userData = await userss.getAllUsers();
-  var userDataFresh = await userss.getUserByUsername(req.session.user);
-  var coursesIdList = userDataFresh?.enrolledCourse;
-  var courses = [];
-  if (coursesIdList != null) {
-    console.log("enrolled course ID list", coursesIdList);
-    courses = await coursess.getCoursesByIdList(coursesIdList);
-  }
-
-  console.log("enrolled courses", courses,req.session.user );
-
-  courses = courses.filter((course) => {
-      return course?.courseTitle?.toLowerCase().includes(search_term?.toLowerCase());
-    } );
-
-
-  if (req.session.user) {
-    res.render("student/student_private", {
-      title: `Search results for ${search_term}`,
-      userInfo: req.session.user,
-      fname: req.session.user,
-      enrolled: courses,
-      error_msg: error_msg
-
-      // courses: courseList,
-    });
-  }
-
-
-});
+        // courses: courseList,
+      });
+    }
+  });
 
 router.route("/logout").get(async (req, res) => {
   //code here for GET
@@ -582,16 +588,17 @@ router.post("/enroll_course", async (req, res) => {
   var userDataFresh = await userss.getUserByUsername(req.session.user);
   var coursesIdList = userDataFresh?.enrolledCourse;
 
-  if(coursesIdList.includes(enrollId)){
+  if (coursesIdList.includes(enrollId)) {
     res.redirect(`/readCourse/${enrollId}`);
-  }else{
+  } else {
+    //
+    var registration_response = await userss.updateEnrolledId(
+      id_data,
+      enrollId
+    );
 
-  //
-  var registration_response = await userss.updateEnrolledId(id_data, enrollId);
-
-  res.redirect("/protected");
+    res.redirect("/protected");
   }
-
 });
 
 // //read  all courses
@@ -651,22 +658,19 @@ router.route("/readCourse/:id").get(async (req, res) => {
 });
 
 router.route("/unenroll_course").post(async (req, res) => {
-  
   const userId = req.body.courseId;
 
   const courseId = req.body.userId;
 
   var userDataFresh = await userss.getUserByUsername(req.session.user);
 
-  console.log("session details-----",req.session.user);
+  console.log("session details-----", req.session.user);
 
   var updatedUser = await userss.unenroll_course(req.session.user, courseId);
 
   if (updatedUser) {
     res.redirect("/");
   }
-    
-
-});  
+});
 
 module.exports = router;
