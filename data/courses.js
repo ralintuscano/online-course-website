@@ -126,15 +126,15 @@ const getCoursesByIdList = async (idList) => {
 
 //
 const removeCourseList = async (id) => {
-  // id = validation.checkId(id);
-  if (!id) throw "You must provide an id to search for";
-
   const courseCollection = await courses();
-  const deletionInfo = await courseCollection.removeOne({ _id: id });
-
+  // const deletionInfo = await courseCollection.removeOne({ _id: id });
+  const deletionInfo = await courseCollection.deleteOne({ _id: ObjectId(id) });
   if (deletionInfo.deletedCount === 0) {
     throw `Could not delete course with id of ${id}`;
   }
+  return true;
+
+  // return { error: true };
 };
 
 module.exports = {
