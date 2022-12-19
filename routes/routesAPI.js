@@ -588,7 +588,7 @@ router.post("/enroll_course", async (req, res) => {
   var userDataFresh = await userss.getUserByUsername(req.session.user);
   var coursesIdList = userDataFresh?.enrolledCourse;
 
-  if (coursesIdList.includes(enrollId)) {
+  if (coursesIdList?.includes(enrollId)) {
     res.redirect(`/readCourse/${enrollId}`);
   } else {
     //
