@@ -2,8 +2,8 @@ const mongoCollections = require("../config/mongoCollections");
 const feedback = mongoCollections.feedback;
 const { ObjectId } = require("mongodb");
 
-const sendFeedback = async (feedBackId, fullname, country, message) => {
-  if (fullname.length <= 3) {
+const sendFeedback = async (feedBackId="", fullname="", country="", message="") => {
+  if (fullname?.length <= 3) {
     return {
       validation_error: "Please provide name and name of the length must be >3",
     };

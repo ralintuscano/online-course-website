@@ -13,10 +13,11 @@
        
        <div class="info">
 
-<form id="registartion-form"
-      autocomplete="on"
-      method="post"
-      action="/feedbackform">
+<form id="registartion-form" --}}
+      {{!-- autocomplete="on" --}}
+      {{!-- method="post" --}}
+      {{!-- action="/feedbackform"> --}}
+>
   {{! first name }}
   <label for="firstname">Full Name* :</label>
   <input
@@ -297,9 +298,14 @@
   <br>
 
  <br />
-  <input type="submit" value="Submit" />
+  <input type="submit" id="submit" value="Submit" />
 </form>
 </div>
       </div>
-
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity=
+        "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+        crossorigin="anonymous">
+    </script>
+    <script src="public/js/feedback_ajax.js"></script>
 {{> page/footer}}

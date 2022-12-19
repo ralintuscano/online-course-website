@@ -155,6 +155,8 @@ router
     //message
     const message_name = req.body.messageInput;
 
+    
+
     try {
       //Create a User by sending u and p.
       var registration_response = await feedbacks.sendFeedback(
@@ -167,18 +169,20 @@ router
       console.log("registration_response", registration_response);
 
       if (registration_response.inserted_feedback == true) {
-        res.render("meassageWithRedirect", {
-          title: "Message",
-          message: "Feedback Sent Successfully",
-          redirectMessage:"Click here to go back to Home Page",
-          redirectUrl: "/",
-        });
+        // res.render("meassageWithRedirect", {
+        //   title: "Message",
+        //   message: "Feedback Sent Successfully",
+        //   redirectMessage:"Click here to go back to Home Page",
+        //   redirectUrl: "/",
+        // });
+        res.json({ message: "Feedback Sent Successfully", success: true });
       } else {
-        res.status(500);
-        res.render("student/feedbackform", {
+        res.json({ error_msg:registration_response.validation_error || "Error in sending feedback" });
+
+        /**res.render("student/feedbackform", {
           title: "register",
           error_msg: registration_response.validation_error || "Error in sending feedback",
-        });
+        });**/
       }
     } catch (e) {
       console.log(e);
