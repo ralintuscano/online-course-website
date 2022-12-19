@@ -379,6 +379,57 @@ const getAllUsers = async () => {
   return userList;
 };
 
+const unenroll_course = async (userId, courseId) => {
+  // let enrolledCourse = [];
+
+ 
+  // console.log("user_id", enrolled_courses_hee);
+
+
+  const userCollection = await users();
+
+
+  let {_id, enrolledCourse} = await getUserByUsername(userId);
+
+  console.log("USERRRRRR---------", enrolledCourse);
+
+  // if (enrolledCourse && enrolledCourse.length === 0) {
+  //   return {
+  //     validation_error: "Course not found in enrolled courses",
+  //   };
+  // }
+
+  // if(enrolledCourse && !enrolledCourse?.includes(courseId)){
+  //   return {
+  //     validation_error: "Course not found in enrolled courses",
+  //   };
+  // }
+
+
+
+  enrolledCourse = enrolledCourse?.filter((course) => course !== courseId);
+
+  console.log("USERRRRRR---------2", );
+
+
+
+  const updatedInfo = await userCollection.updateOne(
+    { _id: ObjectId(_id) },
+    { $set: { enrolledCourse: enrolledCourse } }
+  );
+
+  if (updatedInfo.modifiedCount === 0) {
+    return {
+      validation_error: "failed to remove the course ",
+    };
+  }
+
+  var userCheck = await getUserByUsername(userId);
+  //login success
+  return { updatedInfo: true, data: userCheck };
+
+};
+
 module.exports = {
   createUser,
   checkUser,
@@ -386,4 +437,5 @@ module.exports = {
   updateEnrolledId,
   getAllUsers,
   getUserByUsername,
+  unenroll_course
 };

@@ -650,4 +650,23 @@ router.route("/readCourse/:id").get(async (req, res) => {
   }
 });
 
+router.route("/unenroll_course").post(async (req, res) => {
+  
+  const userId = req.body.courseId;
+
+  const courseId = req.body.userId;
+
+  var userDataFresh = await userss.getUserByUsername(req.session.user);
+
+  console.log("session details-----",req.session.user);
+
+  var updatedUser = await userss.unenroll_course(req.session.user, courseId);
+
+  if (updatedUser) {
+    res.redirect("/");
+  }
+    
+
+});  
+
 module.exports = router;
