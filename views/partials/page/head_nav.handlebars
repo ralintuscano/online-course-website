@@ -15,6 +15,7 @@
     <script
       src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
     ></script>
+
   </head>
   <body>
 
@@ -32,12 +33,18 @@
         <ul class="nav navbar-nav">
 
           <li class="active"><a href="/protected">Home</a></li>
-          <li><a href="#">Page 1</a></li>
+       
           <li><a href="#">Quizz</a></li>
-          <li><a href="/contact_form">Contact Form</a></li>
+         
 
-          <input id= "search" type="text" title="Search" />
-          <a href="#" id="search"><button>search</button></a> 
+
+          <li style="pt-2">
+              <form action="/protected" method="post">
+                <input id= "search_course" name="search_course" type="text" title="Search" />
+                <button type="submit">search</button>
+              </form>
+          </li>
+        
 
           </div>
         </ul>

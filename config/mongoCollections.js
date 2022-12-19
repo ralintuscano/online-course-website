@@ -22,4 +22,5 @@ module.exports = {
   instructor: getCollectionFn("intructor"),
   courses: getCollectionFn("courses"),
   feedback: getCollectionFn("feedback"),
+  quizQuestions: getCollectionFn("quizQuestions"),
 };

@@ -5,25 +5,12 @@ var bcrypt = require("bcryptjs");
 var salt = bcrypt.genSaltSync(10);
 const coursess = require("../data/courses");
 
-//email validation
-// function ValidateEmail(mail) {
-//   console.log(mail);
-//   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-//   return mailformat.test(mail);
-// }
 function ValidateEmail(email_id) {
   const regex_pattern =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   return regex_pattern.test(email_id);
 }
-
-//validate phonenumber
-// function phonenumber(inputtxt) {
-//   var phoneno = /^\d{10}$/;
-//   return /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(inputtxt);
-
-// }
 
 //chech phone
 function ValidatePhonenumber(phone) {

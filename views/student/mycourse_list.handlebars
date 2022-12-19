@@ -27,8 +27,15 @@
 
     <div class="card-footer">
        <form id="login-form" autocomplete="off" method="post" action="/enroll_course">
-      <input id ="enrollInputId" name="enrollInputId" type="hidden"  aria-setsize="10px" class="btn" value="{{this._id}}"/>
-    <button style="height:60px;width:90px;" class="btn" id="login-button" type="submit">Enroll</button>
+        <input id ="enrollInputId" name="enrollInputId" type="hidden"  aria-setsize="10px" class="btn" value="{{this._id}}"/>
+        <button style="height:60px;width:90px;" class="btn" id="login-button" type="submit">
+          
+          {{#if already_enrolled}}
+            Go to course
+          {{else}}
+            Enroll
+          {{/if}}
+          </button>
       </form>
    
     </div>

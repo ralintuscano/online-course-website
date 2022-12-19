@@ -331,4 +331,6 @@ const updateRecord = async (
   // return { error: true };
 };
 
+//create quizz
+
 module.exports = { createUser, checkUser, updateRecord };
