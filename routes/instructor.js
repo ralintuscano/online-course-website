@@ -5,6 +5,7 @@ const intructors = require("../data/instructor");
 const feedbacks = require("../data/feedback");
 const coursess = require("../data/courses");
 const userss = require("../data/users");
+const quizzs = require("../data/quizQuestions");
 
 router.route("/").get(async (req, res) => {
   //code here for GET
@@ -632,5 +633,97 @@ router.route("/deleteCourse/:id").get(async (req, res) => {
     res.render("instructor/instructorLogin", { title: "instructor Login" });
   }
 });
+
+//create quizz
+router
+  .route("/createQuizz")
+  .get(async (req, res) => {
+    //code here for GET
+    if (req.session.user) {
+      res.render("instructor/createQuizz", {
+        userType: req.session.userType,
+        title: "Create Quizz  Page",
+      });
+    } else {
+      res.render("instructor/instructorRegister", {
+        userType: req.session.userType,
+        title: "Instructor Register",
+      });
+    }
+  })
+  .post(async (req, res) => {
+    //code here for POST
+    //get data and save to database
+
+    //course id
+    const course_id = req.body.courseIdInput;
+    //question
+    const question = req.body.questionInput;
+
+    //answer input a
+    const input_a = req.body.option_a_Input;
+
+    //answer input b
+    const input_b = req.body.option_b_Input;
+
+    //answer input c
+    const input_c = req.body.option_c_Input;
+
+    //answer input d
+    const input_d = req.body.option_d_Input;
+
+    //corect answer
+    const correct_answer = req.body.correctAnswerInput;
+
+    //printing quizz data
+    console.log("course id", course_id);
+    console.log("question", question);
+    console.log("answer input a", input_a);
+    console.log("answer input b", input_b);
+    console.log("answer input c", input_c);
+    console.log("answer input d", input_d);
+    console.log("correct answer", correct_answer);
+
+    var id = req.session.idData;
+
+    console.log("user---id answer", id);
+
+    try {
+      //Create a User by sending u and p.
+
+      var registration_response = await quizzs.addQuestion(
+        course_id,
+        question,
+        input_a,
+        input_b,
+        input_c,
+        input_d,
+        correct_answer
+      );
+
+      console.log("registration_response", registration_response);
+
+      if ("inserted_user" in registration_response) {
+        //create myQuizz list handlebars
+        res.redirect("/instructor/createQuizz");
+      } else if ("validation_error" in registration_response) {
+        res.status(400);
+        res.render("instructor/createQuizz", {
+          userType: req.session.userType,
+          title: "instructor register",
+          error_msg: registration_response.validation_error,
+        });
+      } else {
+        res.status(500);
+        res.render("instructor/instructorRegister", {
+          userType: req.session.userType,
+          title: "instructor register",
+          error_msg: "Internal Server Error",
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
 module.exports = router;

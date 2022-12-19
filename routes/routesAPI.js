@@ -160,7 +160,7 @@ router
     const message_name = req.body.messageInput;
 
     try {
-      //Create a User by sending u and p.
+      //Create a User by sending.
       var registration_response = await feedbacks.sendFeedback(
         id_data,
         full_name,
