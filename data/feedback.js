@@ -2,8 +2,8 @@ const mongoCollections = require("../config/mongoCollections");
 const feedback = mongoCollections.feedback;
 const { ObjectId } = require("mongodb");
 
-const sendFeedback = async (feedBackId, fullname, country, message) => {
-  if (fullname.length <= 3) {
+const sendFeedback = async (feedBackId="", fullname="", country="", message="") => {
+  if (fullname?.length <= 3) {
     return {
       validation_error: "Please provide name and name of the length must be >3",
     };
@@ -39,10 +39,10 @@ const sendFeedback = async (feedBackId, fullname, country, message) => {
 
   const inserted_user = await getUserById(insertInfo.insertedId);
   console.log("inserted_user", inserted_user);
-  return {
-    validation_error: "Thank you for your valuable feedback",
-  };
-  return { inserted_user: true };
+  // return {
+  //   validation_error: "Thank you for your valuable feedback",
+  // };
+  return { inserted_feedback: true };
 
   //   return { user_exists: true };
 

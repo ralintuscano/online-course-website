@@ -5,6 +5,8 @@ const router = express.Router();
 const userss = require("../data/users");
 const feedbacks = require("../data/feedback");
 const coursess = require("../data/courses");
+var {O} = require('mongodb');
+
 
 router.route("/").get(async (req, res) => {
   //code here for GET
@@ -136,10 +138,10 @@ router
   .get(async (req, res) => {
     //code here for GET
     var userData = await userss.getUserByUsername(req.session.user);
-    let name = userData.firstnameData + userData.lastnameData;
+    let name = userData?.firstnameData + userData?.lastnameData;
     if (req.session.user) {
       res.render("student/feedbackform", {
-        name: name,
+        // name: name,
         title: "feedback  Page",
       });
     } else {
@@ -155,6 +157,8 @@ router
     //message
     const message_name = req.body.messageInput;
 
+    
+
     try {
       //Create a User by sending u and p.
       var registration_response = await feedbacks.sendFeedback(
@@ -166,14 +170,21 @@ router
 
       console.log("registration_response", registration_response);
 
-      if ("inserted_user" in registration_response) {
-        res.redirect("/");
+      if (registration_response.inserted_feedback == true) {
+        // res.render("meassageWithRedirect", {
+        //   title: "Message",
+        //   message: "Feedback Sent Successfully",
+        //   redirectMessage:"Click here to go back to Home Page",
+        //   redirectUrl: "/",
+        // });
+        res.json({ message: "Feedback Sent Successfully", success: true });
       } else {
-        res.status(500);
-        res.render("student/userRegister", {
+        res.json({ error_msg:registration_response.validation_error || "Error in sending feedback" });
+
+        /**res.render("student/feedbackform", {
           title: "register",
-          error_msg: "Internal Server Error",
-        });
+          error_msg: registration_response.validation_error || "Error in sending feedback",
+        });**/
       }
     } catch (e) {
       console.log(e);
@@ -410,6 +421,10 @@ router.route("/protected").get(async (req, res) => {
 
   if(search_term=="" || search_term.trim()==""){
     error_msg="Please enter a search term";
+  }
+
+  if(search_term.length>25){
+    error_msg="Search term should be less than 25 characters";
   }
 
   console.log("search_term", search_term);
